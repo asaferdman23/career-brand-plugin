@@ -24,34 +24,69 @@ Also look for these files in the same directory (skip any that don't exist yet):
 
 ## First-Time Setup
 
-If this is the user's first time running `/brand`, create their profile by asking these questions ONE AT A TIME:
+If this is the user's first time running `/brand`, set up their profile:
 
-1. **What's your name and current role?** (e.g., "Sarah, Senior Frontend Engineer at Google")
-2. **What's your tech stack?** (e.g., "React, TypeScript, Node.js, Python")
-3. **What makes your background unique?** (e.g., career change, military, sports, self-taught, immigrant)
-4. **What are you building on the side?** (startup, open source, course — or "nothing yet")
-5. **What's your goal with LinkedIn?** (find a job, build authority, promote a project, all of the above)
-6. **What language do you post in?** (English, Hebrew, Spanish, mix, etc.)
-7. **Link to your LinkedIn profile?** (optional)
+### Step 1: Ask for LinkedIn
+Ask: **"What's your LinkedIn username or profile URL? I'll scan it to understand your career, skills, and current brand."**
 
+### Step 2: Scan their LinkedIn
+Use browser automation to read their LinkedIn profile:
+
+```
+Navigate to: https://www.linkedin.com/in/[username]
+Use get_page_text to extract all profile content
+```
+
+Extract from the profile:
+- Name, headline, current role and company, duration
+- Full work experience history
+- Education and certifications
+- Skills and endorsements
+- Recent posts (topics, engagement levels, language, style)
+- Follower/connection count
+- About section
+- Any unique background signals (career change, non-traditional path, side projects)
+
+### Step 3: Ask 3 quick follow-up questions (ONE AT A TIME)
+The LinkedIn scan covers most of the profile, but ask these to fill gaps:
+
+1. **"What makes your background unique beyond what's on LinkedIn?"** (career change, military, sports, self-taught, immigrant — things LinkedIn doesn't capture well)
+2. **"What are you building on the side?"** (startup, open source, course — or "nothing yet")
+3. **"What's your goal with LinkedIn?"** (find a job, build authority, promote a project, all of the above)
+
+### Step 4: Save the profile
 Save to the project memory directory as `user_career_profile.md`:
 
 ```markdown
 ---
 name: [Name] Career Profile
-description: Career background, skills, current situation
+description: Career background, skills, current situation — scanned from LinkedIn + user input
 type: user
 ---
 
 - **Name**: [name]
 - **Current role**: [title] at [company] — [duration]
-- **Tech stack**: [technologies]
-- **Unique background**: [what makes them different]
-- **Side project**: [startup/project or "none"]
-- **LinkedIn**: [url] — [followers if known]
-- **Goal**: [what they want from LinkedIn]
-- **Language**: [posting language preference]
+- **Tech stack**: [technologies from experience + skills]
+- **AI focus**: [any AI/ML certifications, courses, or experience]
+- **Unique background**: [what makes them different — from follow-up question]
+- **Side project**: [startup/project or "none" — from follow-up question]
+- **LinkedIn**: [url] — [followers], [connections]
+- **Notable**: [achievements, awards, innovation wins from profile]
+- **Education**: [relevant courses and certifications]
+- **Content style**: [analysis of their recent posts — language, topics, engagement levels]
+- **Content gaps**: [what's missing from their current posting — e.g., no storytelling, all cert announcements, no consistency]
+- **Goal**: [what they want from LinkedIn — from follow-up question]
+- **Language**: [detected from their posts — e.g., "Hebrew and English" or "English only"]
 ```
+
+### Step 5: Present the brand audit
+Before proceeding, show the user a quick brand audit:
+
+> **Your LinkedIn Brand Snapshot:**
+> - **Strengths:** [what's working — e.g., strong experience, good follower base]
+> - **Gaps:** [what's missing — e.g., no storytelling, posts are all cert announcements, no consistency]
+> - **Unique angle:** [their differentiator that most people don't leverage]
+> - **Quick win:** [one thing they could post about THIS WEEK]
 
 Update the `MEMORY.md` index in the same directory.
 

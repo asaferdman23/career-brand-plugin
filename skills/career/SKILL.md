@@ -19,7 +19,7 @@ Also look for these files in the same directory (skip any that don't exist):
 - `career_goals.md`
 - `brand_performance.md`
 
-**If no profile exists**, ask the user to run `/brand` first to set up their profile — it takes 2 minutes.
+**If no profile exists**, ask: **"What's your LinkedIn username or profile URL?"** Then scan their LinkedIn profile using browser automation (navigate to their profile, extract with get_page_text), ask 3 follow-up questions (unique background, side projects, career goals), and save the profile — same setup flow as `/brand`. This way either command can be the user's entry point.
 
 ---
 
