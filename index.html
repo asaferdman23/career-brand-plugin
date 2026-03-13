@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Career Brand — Personal Branding for Developers Who Build</title>
+  <meta name="description" content="A Claude Code plugin that turns your dev journey into LinkedIn content that gets you recognized, hired, and funded.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0b;
+      --bg-elevated: #111113;
+      --bg-card: #161618;
+      --text: #e8e6e3;
+      --text-muted: #7a7872;
+      --text-dim: #4a4944;
+      --accent: #c4f042;
+      --accent-dim: #8aaa2e;
+      --accent-glow: rgba(196, 240, 66, 0.08);
+      --red: #f04242;
+      --blue: #42a5f0;
+      --border: #222224;
+      --radius: 12px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) var(--bg);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NOISE TEXTURE ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ─── LAYOUT ─── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 100px 0;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 20px 0;
+      background: rgba(10, 10, 11, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      font-size: 15px;
+      letter-spacing: -0.5px;
+      color: var(--text);
+    }
+
+    .logo span { color: var(--accent); }
+
+    .nav-install {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      padding: 8px 20px;
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .nav-install:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(196, 240, 66, 0.3);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: 180px 0 120px;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 600px;
+      background: radial-gradient(ellipse, rgba(196, 240, 66, 0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--accent);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards;
+    }
+
+    .hero h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(48px, 7vw, 88px);
+      line-height: 1.05;
+      font-weight: 400;
+      letter-spacing: -2px;
+      max-width: 900px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.15s forwards;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: 19px;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin-top: 32px;
+      line-height: 1.7;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.3s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 48px;
+      align-items: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.45s forwards;
+    }
+
+    .install-block {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .install-block code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      padding: 14px 20px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .install-block code span { color: var(--accent); }
+
+    .copy-btn {
+      padding: 14px 18px;
+      background: var(--border);
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+      border-left: 1px solid var(--border);
+    }
+
+    .copy-btn:hover { background: #2a2a2e; color: var(--text); }
+    .copy-btn.copied { color: var(--accent); }
+
+    .hero-free {
+      font-size: 14px;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ─── PROBLEM ─── */
+    .problem {
+      border-top: 1px solid var(--border);
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .problem h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 42px;
+      font-weight: 400;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 24px;
+    }
+
+    .problem-left p {
+      color: var(--text-muted);
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .anti-patterns {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .anti-pattern {
+      display: flex;
+      gap: 16px;
+      padding: 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: border-color 0.3s;
+    }
+
+    .anti-pattern:hover { border-color: #333; }
+
+    .anti-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(240, 66, 66, 0.08);
+      border-radius: 8px;
+    }
+
+    .anti-pattern strong {
+      display: block;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .anti-pattern span {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ─── HOW IT WORKS ─── */
+    .how {
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .how h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 42px;
+      font-weight: 400;
+      letter-spacing: -1px;
+      margin-bottom: 64px;
+    }
+
+    .commands {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .command-block {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 40px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .command-block:last-child { border-bottom: none; padding-bottom: 0; }
+
+    .command-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .command-desc h3 {
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .command-desc p {
+      color: var(--text-muted);
+      font-size: 16px;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .command-modes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .mode-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      padding: 6px 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--text-muted);
+    }
+
+    /* ─── TERMINAL DEMO ─── */
+    .demo {
+      border-top: 1px solid var(--border);
+      background: var(--bg-elevated);
+    }
+
+    .demo h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 42px;
+      font-weight: 400;
+      letter-spacing: -1px;
+      margin-bottom: 48px;
+    }
+
+    .terminal {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 20px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .terminal-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+
+    .terminal-dot:nth-child(1) { background: #f04242; }
+    .terminal-dot:nth-child(2) { background: #f0c442; }
+    .terminal-dot:nth-child(3) { background: #42f066; }
+
+    .terminal-title {
+      margin-left: 8px;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .terminal-body {
+      padding: 24px;
+      overflow-x: auto;
+    }
+
+    .terminal-line {
+      opacity: 0;
+      animation: terminalFade 0.4s ease forwards;
+    }
+
+    .t-prompt { color: var(--accent); }
+    .t-command { color: var(--text); }
+    .t-comment { color: var(--text-dim); font-style: italic; }
+    .t-output { color: var(--text-muted); }
+    .t-highlight { color: var(--accent); }
+    .t-blue { color: var(--blue); }
+
+    .terminal-body .gap { height: 16px; }
+
+    /* ─── FEATURES ─── */
+    .features {
+      border-top: 1px solid var(--border);
+    }
+
+    .features h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 42px;
+      font-weight: 400;
+      letter-spacing: -1px;
+      margin-bottom: 64px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .feature-card {
+      padding: 32px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: #333;
+      transform: translateY(-2px);
+    }
+
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-glow);
+      border: 1px solid rgba(196, 240, 66, 0.15);
+      border-radius: 10px;
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ─── WHO ─── */
+    .who {
+      border-top: 1px solid var(--border);
+      background: var(--bg-elevated);
+    }
+
+    .who h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: 42px;
+      font-weight: 400;
+      letter-spacing: -1px;
+      margin-bottom: 48px;
+    }
+
+    .who-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .who-card {
+      padding: 32px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-card);
+    }
+
+    .who-card .who-type {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .who-card h3 {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .who-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ─── CTA ─── */
+    .cta {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 120px 0;
+      position: relative;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, rgba(196, 240, 66, 0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 400;
+      letter-spacing: -1px;
+      margin-bottom: 20px;
+    }
+
+    .cta h2 em { font-style: italic; color: var(--accent); }
+
+    .cta p {
+      font-size: 17px;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta .install-block {
+      display: inline-flex;
+      margin-bottom: 16px;
+    }
+
+    .cta-note {
+      font-size: 13px;
+      color: var(--text-dim);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 0;
+    }
+
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--accent); }
+
+    .footer-links { display: flex; gap: 24px; }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes terminalFade {
+      from { opacity: 0; transform: translateX(-8px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      section { padding: 64px 0; }
+      .problem-grid { grid-template-columns: 1fr; gap: 40px; }
+      .command-block { grid-template-columns: 1fr; gap: 16px; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .who-grid { grid-template-columns: 1fr; }
+      .hero { padding: 140px 0 80px; }
+      .hero h1 { letter-spacing: -1px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="container">
+    <div class="logo"><span>/</span>career-brand</div>
+    <a href="#install" class="nav-install">Install Plugin</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-label">Claude Code Plugin</div>
+    <h1>Your dev journey<br>deserves better than<br>"<em>excited to share</em>"</h1>
+    <p class="hero-sub">A Claude Code plugin that turns what you build, learn, and experience into LinkedIn content that gets you recognized, hired, and funded. No corporate-speak. Just your real story.</p>
+    <div class="hero-actions">
+      <div class="install-block">
+        <code><span>$</span> claude plugin add github:asaferdman23/career-brand-plugin</code>
+        <button class="copy-btn" onclick="copyInstall(this)" title="Copy to clipboard">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        </button>
+      </div>
+      <span class="hero-free">Free &middot; Open Source &middot; MIT</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="container">
+    <div class="problem-grid">
+      <div class="problem-left reveal">
+        <h2>Developers are<br>terrible at<br>selling themselves</h2>
+        <p>You ship features, build side projects, learn new tech, make career moves. But your LinkedIn reads like a certification graveyard. Meanwhile, people half as talented are getting the roles you want because they know how to tell their story.</p>
+      </div>
+      <div class="anti-patterns reveal" style="transition-delay: 0.1s">
+        <div class="anti-pattern">
+          <div class="anti-icon">X</div>
+          <div>
+            <strong>"Excited to share that I've earned my..."</strong>
+            <span>Nobody cares about the cert. They care about what you did with it.</span>
+          </div>
+        </div>
+        <div class="anti-pattern">
+          <div class="anti-icon">X</div>
+          <div>
+            <strong>Hashtag walls with zero story</strong>
+            <span>#AI #ML #React #Fullstack #Innovation #Blessed — this is noise, not signal.</span>
+          </div>
+        </div>
+        <div class="anti-pattern">
+          <div class="anti-icon">X</div>
+          <div>
+            <strong>Posting once every 3 months</strong>
+            <span>Consistency beats quality. But you never know what to write.</span>
+          </div>
+        </div>
+        <div class="anti-pattern">
+          <div class="anti-icon">X</div>
+          <div>
+            <strong>Content that doesn't serve your goals</strong>
+            <span>Random posts that don't connect to your career strategy are wasted effort.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how">
+  <div class="container">
+    <div class="section-label reveal">Two Commands. Full System.</div>
+    <h2 class="reveal">How it works</h2>
+    <div class="commands">
+      <div class="command-block reveal">
+        <div class="command-name">/brand</div>
+        <div class="command-desc">
+          <h3>Personal Branding Engine</h3>
+          <p>Give it a raw idea, a thing you built, or a moment from your week. It asks 2-3 sharp questions, reads your git log for authentic details, then drafts a post in your storyteller voice with multiple hook options. It also plans monthly content calendars aligned with your career goals.</p>
+          <div class="command-modes">
+            <span class="mode-tag">create a post</span>
+            <span class="mode-tag">plan my month</span>
+            <span class="mode-tag">brainstorm ideas</span>
+            <span class="mode-tag">track performance</span>
+          </div>
+        </div>
+      </div>
+      <div class="command-block reveal">
+        <div class="command-name">/career</div>
+        <div class="command-desc">
+          <h3>Career Co-Pilot</h3>
+          <p>Strategic career advice that accounts for your full picture — job search, side project, startup, unique background. Evaluates opportunities, optimizes your LinkedIn profile, preps you for interviews with stories from YOUR life, and builds networking strategies that actually work.</p>
+          <div class="command-modes">
+            <span class="mode-tag">career direction</span>
+            <span class="mode-tag">job search</span>
+            <span class="mode-tag">networking</span>
+            <span class="mode-tag">interview prep</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TERMINAL DEMO -->
+<section class="demo">
+  <div class="container">
+    <div class="section-label reveal">See It In Action</div>
+    <h2 class="reveal">From raw idea to ready post</h2>
+    <div class="terminal reveal">
+      <div class="terminal-header">
+        <div class="terminal-dot"></div>
+        <div class="terminal-dot"></div>
+        <div class="terminal-dot"></div>
+        <span class="terminal-title">Claude Code</span>
+      </div>
+      <div class="terminal-body" id="terminal">
+        <div class="terminal-line" style="animation-delay: 0.3s">
+          <span class="t-prompt">$ </span><span class="t-command">/brand I just built an AI feature that reimagines event photos using GPT-4 Vision + DALL-E</span>
+        </div>
+        <div class="gap"></div>
+        <div class="terminal-line" style="animation-delay: 0.6s">
+          <span class="t-comment"># Loading your career profile and goals...</span>
+        </div>
+        <div class="terminal-line" style="animation-delay: 0.8s">
+          <span class="t-comment"># Reading recent git commits for technical details...</span>
+        </div>
+        <div class="gap"></div>
+        <div class="terminal-line" style="animation-delay: 1.1s">
+          <span class="t-blue">?</span> <span class="t-output">What's the personal angle — what happened to YOU while building this?</span>
+        </div>
+        <div class="terminal-line" style="animation-delay: 1.4s">
+          <span class="t-prompt">&gt; </span><span class="t-command">I spent 3 nights debugging why DALL-E kept generating cartoon events instead of photorealistic ones</span>
+        </div>
+        <div class="gap"></div>
+        <div class="terminal-line" style="animation-delay: 1.7s">
+          <span class="t-highlight">Hook A:</span> <span class="t-output">"DALL-E kept giving me cartoon birthday parties. I asked for corporate galas."</span>
+        </div>
+        <div class="terminal-line" style="animation-delay: 2.0s">
+          <span class="t-highlight">Hook B:</span> <span class="t-output">"3 nights. 47 prompt iterations. One line of code changed everything."</span>
+        </div>
+        <div class="terminal-line" style="animation-delay: 2.3s">
+          <span class="t-highlight">Hook C:</span> <span class="t-output">"The hardest part of building with AI isn't the AI. It's making it do what you actually mean."</span>
+        </div>
+        <div class="gap"></div>
+        <div class="terminal-line" style="animation-delay: 2.6s">
+          <span class="t-prompt">&gt; </span><span class="t-command">B</span>
+        </div>
+        <div class="terminal-line" style="animation-delay: 2.9s">
+          <span class="t-comment"># Drafting in English (AI thought leadership)...</span>
+        </div>
+        <div class="terminal-line" style="animation-delay: 3.2s">
+          <span class="t-highlight">Ready to post. Copied to clipboard.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <div class="container">
+    <div class="section-label reveal">Under The Hood</div>
+    <h2 class="reveal">Built for developers,<br>not influencers</h2>
+    <div class="feature-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon">&#9998;</div>
+        <h3>Storyteller Voice</h3>
+        <p>Trained to write like a person, not a brand. Leads with tension, ends with insight. Never says "excited to share."</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay: 0.05s">
+        <div class="feature-icon">&#128736;</div>
+        <h3>Git-Aware Content</h3>
+        <p>Reads your recent commits for build-in-public posts. Authentic technical details, not made-up buzzwords.</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay: 0.1s">
+        <div class="feature-icon">&#127919;</div>
+        <h3>Career-Aligned</h3>
+        <p>Every post serves your career goals. A career-advisor agent ensures your content strategy matches your direction.</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay: 0.15s">
+        <div class="feature-icon">&#127757;</div>
+        <h3>Multilingual</h3>
+        <p>Posts in any language. Suggests the right one based on topic and audience. Local stories local, tech leadership global.</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay: 0.2s">
+        <div class="feature-icon">&#128101;</div>
+        <h3>Dual-Path Aware</h3>
+        <p>Have a startup AND a job search? Every recommendation accounts for both paths without sacrificing either.</p>
+      </div>
+      <div class="feature-card reveal" style="transition-delay: 0.25s">
+        <div class="feature-icon">&#128200;</div>
+        <h3>Performance Memory</h3>
+        <p>Tell it how posts performed. It learns what works for YOUR audience and adjusts future content accordingly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO IS THIS FOR -->
+<section class="who">
+  <div class="container">
+    <div class="section-label reveal">Who Is This For</div>
+    <h2 class="reveal">Builders who want to<br>be found</h2>
+    <div class="who-grid">
+      <div class="who-card reveal">
+        <div class="who-type">THE SILENT BUILDER</div>
+        <h3>Ships code, never posts</h3>
+        <p>You build impressive things but your LinkedIn is a ghost town. You know you should post but stare at a blank screen every time.</p>
+      </div>
+      <div class="who-card reveal" style="transition-delay: 0.05s">
+        <div class="who-type">THE FOUNDER-EMPLOYEE</div>
+        <h3>Day job + side startup</h3>
+        <p>You need your LinkedIn to serve double duty — attract job opportunities AND build visibility for what you're creating on the side.</p>
+      </div>
+      <div class="who-card reveal" style="transition-delay: 0.1s">
+        <div class="who-type">THE CAREER CHANGER</div>
+        <h3>Non-traditional background</h3>
+        <p>Ex-military, athlete, self-taught, career switcher. Your background is your superpower — this plugin helps you wield it.</p>
+      </div>
+      <div class="who-card reveal" style="transition-delay: 0.15s">
+        <div class="who-type">THE JOB HUNTER</div>
+        <h3>Wants to be recruited, not apply</h3>
+        <p>You want the right people to find YOU. Strategic content + profile optimization + networking playbook to make it happen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="install">
+  <div class="container">
+    <h2>Stop being the best-kept<br>secret in <em>your team</em></h2>
+    <p>One command. Two minutes to set up your profile. Then start building the career presence you deserve.</p>
+    <div class="install-block">
+      <code><span>$</span> claude plugin add github:asaferdman23/career-brand-plugin</code>
+      <button class="copy-btn" onclick="copyInstall(this)" title="Copy to clipboard">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+      </button>
+    </div>
+    <p class="cta-note">Free &middot; Open Source &middot; MIT Licensed</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p><span style="color: var(--accent)">/</span>career-brand &middot; A Claude Code plugin</p>
+    <div class="footer-links">
+      <a href="https://github.com/asaferdman23/career-brand-plugin">GitHub</a>
+      <a href="https://github.com/asaferdman23/career-brand-plugin/issues">Issues</a>
+      <a href="https://github.com/asaferdman23/career-brand-plugin/blob/main/LICENSE">MIT License</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Copy install command
+  function copyInstall(btn) {
+    navigator.clipboard.writeText('claude plugin add github:asaferdman23/career-brand-plugin');
+    btn.classList.add('copied');
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
+    }, 2000);
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Terminal re-animate on scroll
+  const termObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.terminal-line').forEach(line => {
+          line.style.animation = 'none';
+          line.offsetHeight; // reflow
+          line.style.animation = '';
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.terminal').forEach(el => termObserver.observe(el));
+</script>
+
+</body>
+</html>
