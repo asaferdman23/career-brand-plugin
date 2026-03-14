@@ -1,6 +1,6 @@
 ---
 name: brand
-description: Personal branding & LinkedIn content. Create posts, plan monthly calendar, get content ideas. Storyteller voice, aligned with career goals.
+description: Personal branding & LinkedIn content. Create posts, plan monthly calendar, brainstorm ideas, and set post reminders. Storyteller voice, aligned with career goals.
 ---
 
 # Personal Brand — LinkedIn Content Skill
@@ -19,12 +19,13 @@ Also look for these files in the same directory (skip any that don't exist yet):
 - `career_goals.md`
 - `brand_performance.md`
 - `brand_calendar.md`
+- `brand_automation.md`
 
 **If no profile exists**, run the First-Time Setup below.
 
 ## First-Time Setup
 
-If this is the user's first time running `/brand`, set up their profile:
+If this is the user's first time running `/career-brand:brand`, set up their profile:
 
 ### Step 1: Ask for LinkedIn
 Ask: **"What's your LinkedIn username or profile URL? I'll scan it to understand your career, skills, and current brand."**
@@ -46,6 +47,8 @@ Extract from the profile:
 - Follower/connection count
 - About section
 - Any unique background signals (career change, non-traditional path, side projects)
+
+If browser automation or Claude's Chrome integration is unavailable, or LinkedIn blocks access, say that clearly and ask the user to paste the relevant profile details instead. Never pretend you scanned data you could not access.
 
 ### Step 3: Ask 3 quick follow-up questions (ONE AT A TIME)
 The LinkedIn scan covers most of the profile, but ask these to fill gaps:
@@ -96,12 +99,13 @@ Then proceed to the requested mode.
 
 ## Mode Detection
 
-Based on the user's input after `/brand`, detect the mode:
+Based on the user's input after `/career-brand:brand`, detect the mode:
 
 - **"plan my month" / "content calendar" / "plan [month]"** → Mode 2: Plan My Month
 - **"what should I post" / "ideas" / "brainstorm"** → Mode 3: Brainstorm Ideas
+- **"remind me" / "notify me" / "automation" / "schedule a reminder" / "when should I post"** → Mode 4: Schedule Post Reminder
 - **Anything else** → Mode 1: Create a Post (default)
-- **If ambiguous**, ask: "Want me to draft a post, plan your month, or brainstorm ideas?"
+- **If ambiguous**, ask: "Want me to draft a post, plan your month, brainstorm ideas, or set a reminder?"
 
 ---
 
@@ -128,15 +132,9 @@ Use this to add authentic technical details to the story.
 Check `career_goals.md` to align the post with current career positioning.
 
 ### Step 4b: Career risk check (if post touches career topics)
-If the post involves career moves, job search, leaving a company, or anything that could affect professional reputation, dispatch the career-advisor agent:
+If the post involves career moves, job search, leaving a company, or anything that could affect professional reputation, dispatch the career-advisor subagent:
 
-Read the agent prompt from `skills/career-advisor/agent.md` (relative to this plugin), then dispatch:
-
-```
-Agent tool:
-  prompt: [agent.md content] + "type: post-review" + [post idea/draft] + [career profile] + [career goals]
-  description: "Post career risk check"
-```
+Use the `career-advisor` subagent with request type `post-review`, and pass the post idea or draft plus the career profile and current goals.
 
 ### Step 5: Draft the post
 Write the post following the Voice & Style Guide below. Include:
@@ -170,14 +168,8 @@ If the file already exists, just append a new entry. Update `MEMORY.md` index if
 
 ## Mode 2: Plan My Month
 
-### Step 1: Dispatch career-advisor agent
-Read the agent prompt from `skills/career-advisor/agent.md`, then dispatch:
-
-```
-Agent tool:
-  prompt: [agent.md content] + "type: content-themes" + [career profile] + [career goals]
-  description: "Career-aligned content themes"
-```
+### Step 1: Dispatch career-advisor subagent
+Use the `career-advisor` subagent with request type `content-themes`, and pass the career profile and current goals.
 
 ### Step 2: Generate the calendar
 Using the agent's ranked themes, create a 4-week content calendar mixing content pillars derived from the user's profile:
@@ -217,6 +209,97 @@ Rank by engagement potential.
 
 ### Step 4: Transition to Mode 1
 When the user picks an idea, switch to Create a Post mode.
+
+---
+
+## Mode 4: Schedule Post Reminder
+
+Use this mode when the user wants Claude Code to remind them when to post, notify them to draft a post, or automate recurring content nudges.
+
+### Step 1: Explain the real Claude Code limitation up front
+Before scheduling anything, tell the user:
+
+- Claude Code scheduled tasks are session-scoped
+- recurring tasks expire after 3 days
+- tasks disappear when Claude Code exits
+
+If the user needs durable reminders across restarts, say Claude Code itself does not currently provide durable plugin-managed recurring automations, and recommend Claude Desktop scheduled tasks or GitHub Actions instead of pretending this plugin can persist them.
+
+### Step 2: Gather the automation conditions
+Ask short questions one at a time until you have enough detail:
+
+1. **What should trigger the reminder?**
+   Examples: no post drafted this week, this week's `brand_calendar.md` slot is due, there are new git commits worth sharing, or a one-time reminder at a specific date/time.
+2. **When should Claude check or remind you?**
+   Ask for exact local time, cadence, weekdays, or one specific date and time.
+3. **What should Claude do when the reminder fires?**
+   Examples: suggest a topic, draft hooks, summarize recent commits, or just nudge the user.
+
+If the user gives vague timing like "tomorrow morning", convert it into an explicit local time before scheduling. Use exact dates when helpful.
+
+### Step 3: Read the context that the reminder depends on
+Before creating the reminder, check the relevant files that will drive the reminder:
+
+- `brand_calendar.md`
+- `brand_performance.md`
+- `career_goals.md`
+- recent `git log --oneline -20 --all 2>/dev/null` if the reminder depends on new work shipped
+
+### Step 4: Save the automation preferences
+Write `brand_automation.md` in the same project memory directory:
+
+```markdown
+---
+name: Brand Automation
+description: Reminder preferences and scheduling conditions for LinkedIn posting
+type: project
+---
+
+## Reminder Configuration
+- Created: YYYY-MM-DD
+- Trigger type: [one-time | recurring]
+- Timing: [exact date/time or cadence]
+- Conditions: [specific rules Claude should check]
+- Reminder action: [what Claude should do when it fires]
+- Session scope: Claude Code scheduled tasks are session-scoped and recurring tasks expire after 3 days
+```
+
+Update `MEMORY.md` index if new.
+
+### Step 5: Create the scheduled task in Claude Code
+Use Claude Code scheduled tasks that are available in Claude Code v2.1.72 or later:
+
+- For a recurring reminder, prefer `/loop` when the user's request is simple and interval-based.
+- For more exact schedules or conditional reminders, create the task with `CronCreate`.
+- For a one-time reminder, describe it in natural language or use a one-shot `CronCreate` task.
+
+The scheduled prompt itself should be explicit and self-contained. It must tell Claude what to read and what conditions to check. Use a prompt shape like this:
+
+```text
+Check whether a LinkedIn post reminder is due for this user.
+Read brand_calendar.md, brand_performance.md, career_goals.md, and recent git history if needed.
+Conditions: [user's exact conditions].
+If a reminder is due, notify the user with:
+1. Why now
+2. The best post angle
+3. The next action to take
+If no reminder is due, reply with one short line only: "No post reminder due right now."
+```
+
+### Step 6: Confirm the result clearly
+After scheduling, confirm:
+
+- whether it is recurring or one-time
+- the exact local schedule
+- the reminder conditions
+- that it will only run while the current Claude Code session stays open
+
+### Step 7: Help the user edit or cancel reminders later
+If the user wants changes:
+
+- list reminders with natural language or `CronList`
+- cancel with `CronDelete`
+- recreate the reminder with the updated conditions
 
 ---
 

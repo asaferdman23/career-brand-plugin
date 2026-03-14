@@ -19,13 +19,15 @@ Also look for these files in the same directory (skip any that don't exist):
 - `career_goals.md`
 - `brand_performance.md`
 
-**If no profile exists**, ask: **"What's your LinkedIn username or profile URL?"** Then scan their LinkedIn profile using browser automation (navigate to their profile, extract with get_page_text), ask 3 follow-up questions (unique background, side projects, career goals), and save the profile — same setup flow as `/brand`. This way either command can be the user's entry point.
+**If no profile exists**, ask: **"What's your LinkedIn username or profile URL?"** Then scan their LinkedIn profile using browser automation (navigate to their profile, extract with get_page_text), ask 3 follow-up questions (unique background, side projects, career goals), and save the profile — same setup flow as `/career-brand:brand`. This way either command can be the user's entry point.
+
+If browser automation or Claude's Chrome integration is unavailable, or LinkedIn blocks access, say that directly and ask the user to paste the relevant profile details instead.
 
 ---
 
 ## Mode Detection
 
-Based on the user's input after `/career`, detect the mode:
+Based on the user's input after `/career-brand:career`, detect the mode:
 
 - **"career direction" / "should I leave" / "what roles" / "stay or go" / "full-time"** → Mode 1: Career Direction
 - **"job search" / "target companies" / "profile" / "resume" / "salary" / "optimize"** → Mode 2: Job Search
@@ -37,28 +39,22 @@ Based on the user's input after `/career`, detect the mode:
 
 ## Mode 1: Career Direction
 
-### When to dispatch the career-advisor agent
+### When to dispatch the career-advisor subagent
 For significant decisions (leave current job? Go full-time on startup? Accept an offer?), dispatch the agent.
 
-Read the agent prompt from `skills/career-advisor/agent.md` (relative to this plugin), then dispatch:
-
-```
-Agent tool:
-  prompt: [agent.md content] + "type: career-direction" + [career profile] + [career goals] + [user's specific question]
-  description: "Career direction analysis"
-```
+Use the `career-advisor` subagent with request type `career-direction`, and pass the career profile, current goals, and the user's specific question.
 
 ### Conversation flow
 1. Listen to the user's situation
 2. Ask clarifying questions if needed (constraints, timeline, risk tolerance)
-3. Dispatch career-advisor agent if the question is significant
+3. Dispatch career-advisor subagent if the question is significant
 4. Present the analysis conversationally — not as a wall of text
 5. Help the user make a decision
 6. If a decision is made, update `career_goals.md`
 
-### Connecting to /brand
+### Connecting to /career-brand:brand
 After career direction decisions, suggest content angles:
-> "Now that you've decided X, consider posting about Y on LinkedIn — it signals Z to the right people. You can run `/brand` to draft it."
+> "Now that you've decided X, consider posting about Y on LinkedIn — it signals Z to the right people. You can run `/career-brand:brand` to draft it."
 
 ---
 
@@ -72,13 +68,9 @@ Based on the user's profile (stack, experience level, location), identify:
 - **Culture-fit companies** that value their unique background
 
 ### Evaluate a specific opportunity
-When the user shares a job listing, dispatch the career-advisor agent:
+When the user shares a job listing, dispatch the career-advisor subagent:
 
-```
-Agent tool:
-  prompt: [agent.md content] + "type: opportunity-evaluation" + [job listing] + [career profile] + [career goals]
-  description: "Opportunity evaluation"
-```
+Use the `career-advisor` subagent with request type `opportunity-evaluation`, and pass the job listing, career profile, and current goals.
 
 Present the fit analysis, red flags, and impact assessment conversationally.
 
@@ -107,11 +99,7 @@ Help frame salary expectations:
 ## Mode 3: Networking
 
 ### Dispatch agent for strategy
-```
-Agent tool:
-  prompt: [agent.md content] + "type: networking-strategy" + [career profile] + [goals] + [target companies if any]
-  description: "Networking strategy"
-```
+Use the `career-advisor` subagent with request type `networking-strategy`, and pass the career profile, goals, and any target companies.
 
 ### Deliver actionable advice
 1. **People to connect with** — specific types, with intro message drafts
@@ -201,4 +189,4 @@ When career facts change (new job, new cert, role change), update the profile.
 - **Be direct** — developers are builders. No fluff, no motivational speech.
 - **Local market context** — adapt to the user's location and tech ecosystem
 - **Unique backgrounds are gold** — help leverage them, never downplay them
-- **Connect to /brand** — when a career move creates content opportunities, suggest it
+- **Connect to /career-brand:brand** — when a career move creates content opportunities, suggest it

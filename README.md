@@ -4,23 +4,33 @@ Personal branding & career strategy for developers. Create LinkedIn content, pla
 
 ## Install
 
+For local development, load the plugin directly:
+
 ```bash
-claude plugin add github:asaferdman23/career-brand-plugin
+claude --plugin-dir /absolute/path/to/career-brand-plugin
 ```
+
+Claude Code marketplace installs use `/plugin install`, not `claude plugin add`. Until this repo is published through a Claude Code marketplace, `--plugin-dir` is the correct way to test it.
 
 ## Commands
 
-### `/brand` — Personal Branding & LinkedIn Content
+Plugin skills are namespaced in Claude Code, so you invoke them as:
 
-Create LinkedIn posts with a storyteller voice, plan monthly content calendars, and brainstorm ideas.
+- `/career-brand:brand`
+- `/career-brand:career`
+
+### `/career-brand:brand` — Personal Branding & LinkedIn Content
+
+Create LinkedIn posts with a storyteller voice, plan monthly content calendars, brainstorm ideas, and set post reminders.
 
 ```
-/brand I just shipped a feature that uses AI to generate event layouts
-/brand plan my month
-/brand ideas
+/career-brand:brand I just shipped a feature that uses AI to generate event layouts
+/career-brand:brand plan my month
+/career-brand:brand ideas
+/career-brand:brand set a reminder to tell me when it's time to post
 ```
 
-**First run:** The skill asks 7 quick questions to build your career profile. Takes 2 minutes.
+**First run:** The skill asks for your LinkedIn plus 3 follow-up questions to build your career profile.
 
 **What it does:**
 - Drafts posts in a storyteller voice (no "I'm thrilled to announce" ever)
@@ -28,17 +38,19 @@ Create LinkedIn posts with a storyteller voice, plan monthly content calendars, 
 - Suggests language based on your audience
 - Plans monthly content calendars aligned with your career goals
 - Reads your git log for build-in-public material
-- Dispatches a career-advisor agent to align content with your career strategy
+- Can schedule in-session post reminders using Claude Code scheduled tasks
+- Ships a `Notification` hook so reminder turns can raise a desktop notification when Claude needs your input
+- Dispatches a `career-advisor` subagent to align content with your career strategy
 
-### `/career` — Career Co-Pilot
+### `/career-brand:career` — Career Co-Pilot
 
 Career direction, job search, networking strategy, and interview prep.
 
 ```
-/career what kind of roles should I target?
-/career [paste a job listing]
-/career networking
-/career interview prep for senior fullstack role
+/career-brand:career what kind of roles should I target?
+/career-brand:career [paste a job listing]
+/career-brand:career networking
+/career-brand:career interview prep for senior fullstack role
 ```
 
 **Modes:**
@@ -56,8 +68,28 @@ Both skills share context through memory files:
 - `career_goals.md` — your current targets (created by `/career`)
 - `brand_calendar.md` — your monthly content plan (created by `/brand`)
 - `brand_performance.md` — what posts worked (you report, it learns)
+- `brand_automation.md` — reminder conditions and scheduling preferences
 
-A **career-advisor agent** is dispatched for deep strategic thinking — content theme planning, opportunity evaluation, networking strategy.
+A **career-advisor subagent** is dispatched for deep strategic thinking — content theme planning, opportunity evaluation, networking strategy.
+
+## Post Reminders
+
+The brand skill can now collect reminder conditions and create Claude Code scheduled tasks for post reminders.
+
+Example prompts:
+
+```text
+/career-brand:brand remind me every weekday at 9:00 if I still have no post drafted this week
+/career-brand:brand set up a reminder to check my brand calendar every Tuesday and Thursday
+/career-brand:brand remind me tomorrow at 18:00 to draft the builder story from this week's commits
+```
+
+Important limitations from Claude Code:
+
+- Scheduled tasks are session-scoped. They disappear when you exit Claude Code.
+- Recurring tasks expire after 3 days unless recreated.
+- For durable reminders that survive restarts, you need an external scheduler such as Claude Desktop scheduled tasks or GitHub Actions.
+- Desktop notifications depend on your OS having `osascript`, `notify-send`, or `powershell.exe` available.
 
 ## Who Is This For
 

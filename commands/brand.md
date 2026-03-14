@@ -1,6 +1,6 @@
 ---
-description: Create LinkedIn posts, plan content calendars, brainstorm ideas — storyteller voice, bilingual
-argument-hint: [post idea or "plan my month" or "ideas"]
+description: Create LinkedIn posts, plan content calendars, brainstorm ideas, or set post reminders
+argument-hint: [post idea | "plan my month" | "ideas" | "set a reminder"]
 allowed-tools: [Read, Write, Edit, Glob, Grep, Bash, Agent]
 ---
 
