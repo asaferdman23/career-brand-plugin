@@ -746,6 +746,126 @@
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
     /* ─── RESPONSIVE ─── */
+    /* ─── LIVE CHAT DEMOS ─── */
+    .live-demos {
+      padding: 100px 0;
+      background: var(--warm);
+    }
+
+    .live-chat {
+      max-width: 720px;
+      margin: 0 auto 40px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .live-chat:last-child { margin-bottom: 0; }
+
+    .live-chat-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 24px;
+      background: #f8f8f8;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--text-soft);
+    }
+
+    .live-chat-badge {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      background: var(--blue);
+      color: white;
+      border-radius: 100px;
+    }
+
+    .live-chat-body { padding: 24px; }
+
+    .chat-msg {
+      margin-bottom: 20px;
+    }
+
+    .chat-msg:last-child { margin-bottom: 0; }
+
+    .chat-role {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .chat-msg.user .chat-role { color: var(--blue); }
+    .chat-msg.ai .chat-role { color: var(--gold); }
+
+    .chat-msg.user .chat-text {
+      background: var(--blue-glow);
+      border: 1px solid rgba(10,102,194,0.12);
+      border-radius: 12px 12px 12px 4px;
+      padding: 14px 18px;
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .chat-msg.ai .chat-text {
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: 12px 12px 4px 12px;
+      padding: 14px 18px;
+      font-size: 15px;
+      color: var(--text-mid);
+      line-height: 1.7;
+    }
+
+    .chat-msg.ai .chat-text strong { color: var(--text); }
+
+    .chat-result {
+      margin-top: 24px;
+      border: 2px solid var(--blue);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .chat-result-label {
+      background: var(--blue);
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 10px 18px;
+    }
+
+    .chat-result-post {
+      padding: 20px;
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    .chat-seemore {
+      color: var(--text-faint);
+      font-size: 14px;
+    }
+
+    .chat-result-stats {
+      display: flex;
+      gap: 16px;
+      padding: 12px 20px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--text-soft);
+    }
+
+    .chat-result-stats strong { color: var(--text); }
+
     /* ─── TUTORIAL ─── */
     .tutorial {
       padding: 100px 0;
@@ -890,7 +1010,7 @@
       <a href="#transformation">Why it works</a>
       <a href="#tutorial">Setup guide</a>
       <a href="#personas">Who it's for</a>
-      <a href="#how">How it works</a>
+      <a href="#examples">Examples</a>
       <a href="#tutorial" class="btn btn-fill" onclick="track('CTA Click', {location: 'nav'})">Get Started Free</a>
     </div>
   </div>
@@ -1178,41 +1298,232 @@
   </div>
 </section>
 
-<!-- EXAMPLE POSTS -->
-<section class="examples">
+<!-- LIVE DEMO CONVERSATIONS -->
+<section class="live-demos" id="examples">
   <div class="container">
-    <h2 class="reveal">Posts that actually<br>get engagement</h2>
-    <p class="reveal">Not AI slop. Real stories written in your voice.</p>
-    <div class="example-grid">
-      <div class="example-card reveal">
-        <div class="example-badge">Engineer</div>
-        <div class="ex-role">Build-in-public post</div>
-        <div class="ex-hook">"3 nights. 47 prompt iterations. One line of code changed everything."</div>
-        <div class="ex-preview">I've been building an AI feature that reimagines event photos. DALL-E kept giving me cartoon birthday parties. I asked for corporate galas...</div>
-        <div class="ex-stats"><span><strong>247</strong> reactions</span><span><strong>38</strong> comments</span><span><strong>12</strong> reposts</span></div>
+    <div class="section-label reveal" style="text-align:center">See It In Action</div>
+    <h2 class="reveal" style="font-family:'Playfair Display',serif;font-size:38px;font-weight:900;letter-spacing:-1px;text-align:center;margin-bottom:16px;">Real conversations.<br>Real posts. Your voice.</h2>
+    <p class="reveal" style="text-align:center;font-size:18px;color:var(--text-mid);max-width:520px;margin:0 auto 56px;">Here's what it actually looks like when you use Career Brand. Not templates. A conversation that draws your story out.</p>
+
+    <!-- Demo 1: Engineer build-in-public -->
+    <div class="live-chat reveal">
+      <div class="live-chat-header">
+        <div class="live-chat-badge">Engineer</div>
+        <span>Build-in-public post</span>
       </div>
-      <div class="example-card reveal" style="transition-delay: 0.08s">
-        <div class="example-badge">Product Manager</div>
-        <div class="ex-role">Leadership post</div>
-        <div class="ex-hook">"We almost killed our best feature. The data said it was failing."</div>
-        <div class="ex-preview">Two weeks before launch, the activation numbers looked terrible. I was ready to pull the plug. Then my junior PM asked a question that changed everything...</div>
-        <div class="ex-stats"><span><strong>312</strong> reactions</span><span><strong>54</strong> comments</span><span><strong>8</strong> reposts</span></div>
-      </div>
-      <div class="example-card reveal" style="transition-delay: 0.16s">
-        <div class="example-badge">Career Changer</div>
-        <div class="ex-role">Personal story</div>
-        <div class="ex-hook">"8 years on the basketball court taught me more about engineering than any bootcamp."</div>
-        <div class="ex-preview">People ask me why I left professional sports for tech. They think it's a left turn. It's actually a straight line...</div>
-        <div class="ex-stats"><span><strong>189</strong> reactions</span><span><strong>41</strong> comments</span><span><strong>15</strong> reposts</span></div>
-      </div>
-      <div class="example-card reveal" style="transition-delay: 0.24s">
-        <div class="example-badge">Job Hunter</div>
-        <div class="ex-role">Strategic visibility</div>
-        <div class="ex-hook">"I stopped applying to jobs 6 weeks ago. Here's what happened."</div>
-        <div class="ex-preview">For 3 months I was sending 10 applications a week. Zero responses. Then I changed my approach completely. Instead of applying, I started...</div>
-        <div class="ex-stats"><span><strong>521</strong> reactions</span><span><strong>87</strong> comments</span><span><strong>23</strong> reposts</span></div>
+      <div class="live-chat-body">
+        <div class="chat-msg user">
+          <div class="chat-role">You</div>
+          <div class="chat-text">/brand I just built an AI feature that reimagines event photos using GPT-4 Vision + DALL-E</div>
+        </div>
+        <div class="chat-msg ai">
+          <div class="chat-role">Career Brand</div>
+          <div class="chat-text">What's the personal angle — what happened to YOU while building this? The feature is cool, but people connect with the struggle, not the spec.</div>
+        </div>
+        <div class="chat-msg user">
+          <div class="chat-role">You</div>
+          <div class="chat-text">I spent 3 nights debugging why DALL-E kept generating cartoon events instead of photorealistic ones. Turned out it was one word in the prompt.</div>
+        </div>
+        <div class="chat-msg ai">
+          <div class="chat-role">Career Brand</div>
+          <div class="chat-text">That's the story. Who should care about this — engineers building with AI, or a broader audience?</div>
+        </div>
+        <div class="chat-msg user">
+          <div class="chat-role">You</div>
+          <div class="chat-text">Engineers who build with AI tools</div>
+        </div>
+        <div class="chat-msg ai">
+          <div class="chat-role">Career Brand</div>
+          <div class="chat-text"><strong>Suggested language:</strong> English (AI thought leadership, global reach)<br><br>
+            <strong>Hook A:</strong> "DALL-E kept giving me cartoon birthday parties. I asked for corporate galas."<br>
+            <strong>Hook B:</strong> "3 nights. 47 prompt iterations. One line of code changed everything."<br>
+            <strong>Hook C:</strong> "The hardest part of building with AI isn't the AI. It's making it do what you actually mean."</div>
+        </div>
+        <div class="chat-msg user">
+          <div class="chat-role">You</div>
+          <div class="chat-text">B</div>
+        </div>
+        <div class="chat-result">
+          <div class="chat-result-label">Final post — ready to copy</div>
+          <div class="chat-result-post">3 nights. 47 prompt iterations. One line of code changed everything.<br><br>I've been building an AI feature that takes event photos and generates visual variations — different venues, different vibes, same concept. The idea was simple. The execution was humbling.<br><br>DALL-E kept generating cartoons. Not stylized illustrations — literal cartoon birthday parties when I asked for corporate galas. I tried everything: negative prompts, style prefixes, temperature tweaks...<br><br><span class="chat-seemore">...see more</span></div>
+          <div class="chat-result-stats">
+            <span>&#128077; &#10084;&#65039; &#128079; <strong>247</strong></span>
+            <span><strong>38</strong> comments</span>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- Demo 2: Product Manager -->
+    <div class="live-chat reveal">
+      <div class="live-chat-header">
+        <div class="live-chat-badge">Product Manager</div>
+        <span>Leadership story</span>
+      </div>
+      <div class="live-chat-body">
+        <div class="chat-msg user">
+          <div class="chat-role">You</div>
+          <div class="chat-text">/brand I just led a product launch that doubled our user activation rate</div>
+        </div>
+        <div class="chat-msg ai">
+          <div class="chat-role">Career Brand</div>
+          <div class="chat-text">Nice win. But what almost went wrong? The best LinkedIn stories have a moment where everything could have fallen apart.</div>
+        </div>
+        <div class="chat-msg user">
+          <div class="chat-role">You</div>
+          <div class="chat-text">We almost killed the feature 2 weeks before launch. The data looked terrible until we realized we were measuring the wrong metric entirely.</div>
+        </div>
+        <div class="chat-msg ai">
+          <div class="chat-role">Career Brand</div>
+          <div class="chat-text">That's a much better story than "we launched and it worked." What's the one takeaway — the lesson someone else can steal?</div>
+        </div>
+        <div class="chat-msg user">
+          <div class="chat-role">You</div>
+          <div class="chat-text">Question your metrics before you question your product.</div>
+        </div>
+        <div class="chat-msg ai">
+          <div class="chat-role">Career Brand</div>
+          <div class="chat-text"><strong>Suggested language:</strong> English (product leadership, global audience)<br><br>
+            <strong>Hook A:</strong> "We almost killed our best feature. The data said it was failing."<br>
+            <strong>Hook B:</strong> "Two weeks before launch, I had to convince my VP not to pull the plug."<br>
+            <strong>Hook C:</strong> "The metric that saved our product launch wasn't in any dashboard."</div>
+        </div>
+        <div class="chat-result">
+          <div class="chat-result-label">Final post — ready to copy</div>
+          <div class="chat-result-post">We almost killed our best feature. The data said it was failing.<br><br>Two weeks before launch, activation numbers were tanking. My instinct was to delay. My VP wanted to cut scope. The team was demoralized.<br><br>Then someone asked: "Are we even measuring the right thing?"<br><br>We weren't. We'd been tracking first-session completion. But users weren't completing in one session — they were coming back the next day and finishing...<br><br><span class="chat-seemore">...see more</span></div>
+          <div class="chat-result-stats">
+            <span>&#128077; &#10084;&#65039; &#128079; <strong>312</strong></span>
+            <span><strong>54</strong> comments</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo 3: Career Changer -->
+    <div class="live-chat reveal">
+      <div class="live-chat-header">
+        <div class="live-chat-badge">Career Changer</div>
+        <span>Personal narrative</span>
+      </div>
+      <div class="live-chat-body">
+        <div class="chat-msg user">
+          <div class="chat-role">You</div>
+          <div class="chat-text">/brand I want to post about my transition from professional basketball to tech</div>
+        </div>
+        <div class="chat-msg ai">
+          <div class="chat-role">Career Brand</div>
+          <div class="chat-text">Most career-change posts are "I used to do X, now I do Y." Boring. What's one specific skill from basketball that you use every single day as an engineer — something people wouldn't expect?</div>
+        </div>
+        <div class="chat-msg user">
+          <div class="chat-role">You</div>
+          <div class="chat-text">Film review. In basketball we'd watch game tape for hours, analyzing every play. Now I do the same thing with code reviews and system architecture.</div>
+        </div>
+        <div class="chat-msg ai">
+          <div class="chat-role">Career Brand</div>
+          <div class="chat-text">That's the connection nobody sees. Who should care — other career changers, or hiring managers who undervalue non-traditional backgrounds?</div>
+        </div>
+        <div class="chat-msg user">
+          <div class="chat-role">You</div>
+          <div class="chat-text">Both honestly</div>
+        </div>
+        <div class="chat-msg ai">
+          <div class="chat-role">Career Brand</div>
+          <div class="chat-text"><strong>Suggested language:</strong> English (career arc, broad reach)<br><br>
+            <strong>Hook A:</strong> "8 years on the basketball court taught me more about engineering than any bootcamp."<br>
+            <strong>Hook B:</strong> "People ask why I left sports for tech. They think it's a left turn. It's a straight line."<br>
+            <strong>Hook C:</strong> "The best engineers I know think like athletes. Here's why."</div>
+        </div>
+        <div class="chat-result">
+          <div class="chat-result-label">Final post — ready to copy</div>
+          <div class="chat-result-post">People ask why I left sports for tech. They think it's a left turn. It's a straight line.<br><br>For 8 years I played professional basketball. And the thing nobody talks about is how much of basketball is NOT playing basketball. It's film review. Hours of watching tape, finding patterns, understanding why a play worked or fell apart.<br><br>Now I review code instead of game tape. And it's the same skill: slow down, find the pattern, understand the system...<br><br><span class="chat-seemore">...see more</span></div>
+          <div class="chat-result-stats">
+            <span>&#128077; &#10084;&#65039; &#128079; <strong>189</strong></span>
+            <span><strong>41</strong> comments</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo 4: /career — Job evaluation -->
+    <div class="live-chat reveal">
+      <div class="live-chat-header">
+        <div class="live-chat-badge" style="background: var(--gold); color: var(--text);">/career</div>
+        <span>Evaluating a job offer</span>
+      </div>
+      <div class="live-chat-body">
+        <div class="chat-msg user">
+          <div class="chat-role">You</div>
+          <div class="chat-text">/career I got an offer for Head of Product at an AI startup. 40% raise. But my side project is finally gaining traction.</div>
+        </div>
+        <div class="chat-msg ai">
+          <div class="chat-role">Career Brand</div>
+          <div class="chat-text"><em>Dispatching career advisor for deep analysis...</em><br><br>
+            <strong>Fit Score: 7/10</strong><br><br>
+            <strong>What's good:</strong> The title jump is significant. AI startup experience validates your side-project skills. The comp bump gives you more runway.<br><br>
+            <strong>Red flag:</strong> Early-stage AI startups typically expect 60+ hr weeks. That would kill your side project momentum right when it's working.<br><br>
+            <strong>The move:</strong> Counter with a 4-day week. Frame it as "I do my best strategic work when I have space to think." If they say no, that tells you about the culture.<br><br>
+            <strong>Content angle:</strong> Whether you take it or not, post about how you evaluate opportunities. "How I think about career decisions" posts signal executive thinking to future employers.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo 5: /career — Interview prep -->
+    <div class="live-chat reveal">
+      <div class="live-chat-header">
+        <div class="live-chat-badge" style="background: var(--gold); color: var(--text);">/career</div>
+        <span>Interview preparation</span>
+      </div>
+      <div class="live-chat-body">
+        <div class="chat-msg user">
+          <div class="chat-role">You</div>
+          <div class="chat-text">/career interview prep — I have a final round for a Senior PM role at a fintech company on Tuesday</div>
+        </div>
+        <div class="chat-msg ai">
+          <div class="chat-role">Career Brand</div>
+          <div class="chat-text"><strong>Your story bank for this interview:</strong><br><br>
+            &#127942; <strong>Leadership:</strong> "When I led the product launch that doubled activation — and almost got killed two weeks before ship date"<br><br>
+            &#128200; <strong>Data-driven:</strong> "The time we discovered we were measuring the wrong metric and it changed our entire strategy"<br><br>
+            &#9889; <strong>Under pressure:</strong> "From my sports career — performing when 18,000 people are watching teaches you something no standup can"<br><br>
+            &#128161; <strong>Innovation:</strong> "Building my side project — taking an idea from zero to working product, alone, on nights and weekends"<br><br>
+            <strong>"Tell me about yourself" (90 seconds):</strong><br>
+            <em>"I started in [your background], which taught me [unexpected skill]. That led me to [current role] where I [biggest impact]. Now I'm excited about [what this role offers] because [genuine reason]."</em><br><br>
+            Want to practice with mock questions?</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo 6: Monthly planning -->
+    <div class="live-chat reveal">
+      <div class="live-chat-header">
+        <div class="live-chat-badge">Any role</div>
+        <span>Monthly content planning</span>
+      </div>
+      <div class="live-chat-body">
+        <div class="chat-msg user">
+          <div class="chat-role">You</div>
+          <div class="chat-text">/brand plan my month</div>
+        </div>
+        <div class="chat-msg ai">
+          <div class="chat-role">Career Brand</div>
+          <div class="chat-text"><em>Analyzing your career goals, recent work, and what's resonated before...</em><br><br>
+            <strong>Your March content calendar:</strong><br><br>
+            <strong>Week 1</strong><br>
+            &#128197; Mon — [EN] "The debugging trick nobody taught me" — builder story<br>
+            &#128197; Thu — [HE] Your team win from last sprint — career reflection<br><br>
+            <strong>Week 2</strong><br>
+            &#128197; Tue — [EN] Hot take on AI code assistants — thought leadership<br>
+            &#128197; Fri — [HE] The moment you knew you picked the right career — personal story<br><br>
+            <strong>Week 3</strong><br>
+            &#128197; Mon — [EN] What you shipped this month — build-in-public<br>
+            &#128197; Wed — [HE] Networking lesson that changed your approach — career growth<br><br>
+            <strong>Week 4</strong><br>
+            &#128197; Tue — [EN] Contrarian opinion about your industry — thought leadership<br>
+            &#128197; Thu — [HE] End-of-month reflection — what you learned — personal<br><br>
+            <em>Want me to start drafting any of these?</em></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
