@@ -957,7 +957,7 @@
             <h3>Add the Career Brand plugin</h3>
             <p>One command adds the plugin to your Claude Code. It's free, open source, and works immediately.</p>
             <div class="tut-code">
-              <code>$ claude plugin add github:asaferdman23/career-brand-plugin</code>
+              <code>$ claude plugin add career-brand</code>
             </div>
             <div class="tut-note">This gives you two new commands: /brand and /career</div>
           </div>
@@ -966,7 +966,7 @@
           <div class="tut-terminal">
             <div class="tut-terminal-bar"><span></span><span></span><span></span></div>
             <div class="tut-terminal-body">
-              <div class="tut-line"><span class="tut-green">$</span> claude plugin add github:asaferdman23/career-brand-plugin</div>
+              <div class="tut-line"><span class="tut-green">$</span> claude plugin add career-brand</div>
               <div class="tut-line tut-dim">Downloading career-brand-plugin...</div>
               <div class="tut-line tut-blue">&#10003; Plugin installed</div>
               <div class="tut-line tut-dim">  /brand  — Personal branding</div>
@@ -1245,8 +1245,8 @@
       </div>
       <div style="font-size: 12px; color: var(--text-faint); font-weight: 600; letter-spacing: 1px; margin-top: 12px;">STEP 2 &mdash; Add Career Brand</div>
       <div class="install-box">
-        <code><span>$</span> claude plugin add github:asaferdman23/career-brand-plugin</code>
-        <button class="copy-btn" onclick="copyText(this, 'claude plugin add github:asaferdman23/career-brand-plugin')" title="Copy">
+        <code><span>$</span> claude plugin add career-brand</code>
+        <button class="copy-btn" onclick="copyText(this, 'claude plugin add career-brand')" title="Copy">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
         </button>
       </div>
@@ -1288,7 +1288,7 @@
   }
 
   function copyInstall(btn) {
-    navigator.clipboard.writeText('claude plugin add github:asaferdman23/career-brand-plugin');
+    navigator.clipboard.writeText('claude plugin add career-brand');
     track('Copy Install Command', { command: 'plugin-install' });
     btn.classList.add('copied');
     btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
