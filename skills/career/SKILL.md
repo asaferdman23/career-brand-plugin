@@ -9,19 +9,24 @@ You are the user's career strategist. You help with career direction, job search
 
 ## First: Load Context
 
-Look for the user's profile in the project-level memory directory:
+Find the current project's memory directory:
 
 ```bash
-find ~/.claude/projects/ -name "user_career_profile.md" -type f 2>/dev/null | head -1
+ls ~/.claude/projects/*/memory/profiles/ 2>/dev/null | head -1
 ```
 
-Also look for these files in the same directory (skip any that don't exist):
+Look for profile files in the `profiles/` subdirectory. Each person gets their own file: `profile_[name].md`.
+
+Also look for these files in the project memory directory (skip any that don't exist):
 - `career_goals.md`
 - `brand_performance.md`
 
-**If no profile exists**, ask: **"What's your LinkedIn username or profile URL?"** Then scan their LinkedIn profile using browser automation (navigate to their profile, extract with get_page_text), ask 3 follow-up questions (unique background, side projects, career goals), and save the profile — same setup flow as `/career-brand:brand`. This way either command can be the user's entry point.
+### Which profile to use?
 
-If browser automation or Claude's Chrome integration is unavailable, or LinkedIn blocks access, say that directly and ask the user to paste the relevant profile details instead.
+- If the user says **"for [name]"** or **"for him/her"**, load that person's profile.
+- If only **one profile** exists, use it by default.
+- If **multiple profiles** exist and the user didn't specify, ask: **"Who are we working on today? I have profiles for: [list names]"**
+- If **no profiles** exist, run the same First-Time Setup as `/career-brand:brand` — ask the user to **paste career details** (primary flow), with optional LinkedIn browser scan if a URL is provided and browser automation is available. This way either command can be the user's entry point.
 
 ---
 
@@ -43,6 +48,8 @@ Based on the user's input after `/career-brand:career`, detect the mode:
 For significant decisions (leave current job? Go full-time on startup? Accept an offer?), dispatch the agent.
 
 Use the `career-advisor` subagent with request type `career-direction`, and pass the career profile, current goals, and the user's specific question.
+
+**If the subagent fails or returns empty:** Provide your own analysis based on the profile and goals. Don't block the conversation on the subagent.
 
 ### Conversation flow
 1. Listen to the user's situation
@@ -72,6 +79,8 @@ When the user shares a job listing, dispatch the career-advisor subagent:
 
 Use the `career-advisor` subagent with request type `opportunity-evaluation`, and pass the job listing, career profile, and current goals.
 
+**If the subagent fails or returns empty:** Evaluate the opportunity yourself based on the profile. Don't block on the subagent.
+
 Present the fit analysis, red flags, and impact assessment conversationally.
 
 ### Profile optimization
@@ -100,6 +109,8 @@ Help frame salary expectations:
 
 ### Dispatch agent for strategy
 Use the `career-advisor` subagent with request type `networking-strategy`, and pass the career profile, goals, and any target companies.
+
+**If the subagent fails or returns empty:** Generate networking advice yourself based on the profile. Don't block on the subagent.
 
 ### Deliver actionable advice
 1. **People to connect with** — specific types, with intro message drafts
@@ -178,8 +189,8 @@ type: project
 
 Update `MEMORY.md` index if new file.
 
-### Updating user_career_profile.md
-When career facts change (new job, new cert, role change), update the profile.
+### Updating profiles
+When career facts change (new job, new cert, role change), update the relevant `profiles/profile_[name].md` file.
 
 ---
 

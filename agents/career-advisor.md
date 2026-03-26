@@ -1,6 +1,7 @@
 ---
 name: career-advisor
 description: Strategic advisor for career decisions, content themes, post risk checks, opportunity evaluation, and networking strategy.
+allowed-tools: [Read, Glob, Grep, Bash, WebSearch, WebFetch]
 ---
 
 # Career Advisor

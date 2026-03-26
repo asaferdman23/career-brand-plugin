@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/notify.sh\""
+            "command": "bash -c 'title=\"Claude Code\" msg=\"Career Brand needs your attention\"; case \"$(uname -s)\" in Darwin) osascript -e \"display notification \\\"$msg\\\" with title \\\"$title\\\"\" 2>/dev/null;; Linux) command -v notify-send >/dev/null && notify-send \"$title\" \"$msg\" 2>/dev/null;; *) command -v powershell.exe >/dev/null && powershell.exe -Command \"[System.Windows.Forms.MessageBox]::Show(\\\"$msg\\\", \\\"$title\\\")\" 2>/dev/null;; esac; true'"
           }
         ]
       }
