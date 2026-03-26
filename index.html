@@ -125,6 +125,7 @@
       background: var(--text);
       border-radius: 8px;
       overflow: hidden;
+      max-width: 100%;
     }
 
     .install-box code {
@@ -439,9 +440,50 @@
     /* ─── RESPONSIVE ─── */
     @media (max-width: 768px) {
       .hero { padding: 120px 0 60px; }
+      .hero h1 { font-size: 32px; letter-spacing: -1px; }
+      .hero-sub { font-size: 16px; }
       .feature-grid { grid-template-columns: 1fr; }
       .who-grid { grid-template-columns: 1fr; }
       .nav-right a:not(.btn) { display: none; }
+      .nav-right { gap: 10px; }
+      .nav-right .btn { padding: 6px 14px; font-size: 12px; }
+
+      /* Install boxes: allow wrapping on mobile */
+      .install-box { max-width: 100%; }
+      .install-box code { white-space: normal; word-break: break-all; font-size: 12px; padding: 10px 12px; }
+      .copy-btn { padding: 12px 16px; min-width: 44px; min-height: 44px; }
+
+      /* Step codes */
+      .step-code { white-space: normal; word-break: break-all; font-size: 12px; }
+
+      /* Terminal demos: scroll horizontally */
+      .terminal-body { overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 11px; padding: 14px 16px; }
+
+      /* Demo tabs wrap nicely */
+      .demo-tabs { gap: 6px; }
+      .demo-tab { font-size: 12px; padding: 6px 12px; }
+
+      /* Steps */
+      .step { gap: 12px; }
+      .step-content h3 { font-size: 15px; }
+
+      /* CTA */
+      .cta h2 { font-size: 26px; }
+      .cta h2 br { display: none; }
+
+      /* Footer stacks */
+      footer .container { flex-direction: column; gap: 12px; text-align: center; }
+
+      /* Section padding */
+      .what, .demo, .who, .cta, .how { padding: 60px 0; }
+      .what h2, .demo h2, .who h2, .how h2 { font-size: 24px; }
+    }
+
+    @media (max-width: 400px) {
+      .hero h1 { font-size: 28px; }
+      .install-box code { font-size: 11px; padding: 8px 10px; }
+      .terminal-body { font-size: 10px; line-height: 1.7; }
+      .nav-left { font-size: 14px; }
     }
   </style>
 </head>
