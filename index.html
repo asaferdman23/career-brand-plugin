@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Career Brand — Stop Being Invisible. Start Being Recognized.</title>
-  <meta name="description" content="The AI-powered career brand manager that turns your real experience into LinkedIn content that gets you noticed, hired, and promoted. Free plugin for Claude Code.">
-  <meta property="og:title" content="Career Brand — Stop Being Invisible">
-  <meta property="og:description" content="Your career is too good to stay a secret. Let AI turn your story into a personal brand that opens doors.">
+  <title>Career Brand — LinkedIn content plugin for Claude Code</title>
+  <meta name="description" content="A Claude Code plugin that turns your real career story into LinkedIn posts that get you noticed. Paste your experience, get posts with your voice. Free and open source.">
+  <meta property="og:title" content="Career Brand — LinkedIn plugin for Claude Code">
+  <meta property="og:description" content="Paste your career details. Get LinkedIn posts in your voice. A free plugin for Claude Code.">
   <meta property="og:image" content="logo_career_brand.png">
   <link rel="icon" href="logo_career_brand.png">
   <!-- Privacy-friendly analytics by Plausible -->
@@ -17,24 +17,21 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --blue: #0a66c2;
       --blue-light: #378fe9;
       --blue-dark: #004182;
-      --blue-glow: rgba(10, 102, 194, 0.08);
-      --gold: #d4a12a;
-      --gold-light: #f0c75e;
-      --warm: #f8f4ef;
-      --warm-dark: #ede6db;
+      --green: #50c878;
+      --gold: #f0c75e;
       --bg: #ffffff;
-      --text: #1a1a1a;
-      --text-mid: #444;
-      --text-soft: #777;
-      --text-faint: #aaa;
-      --border: #e8e8e8;
-      --radius: 16px;
+      --bg-soft: #f9f9f9;
+      --text: #111;
+      --text-mid: #555;
+      --text-soft: #888;
+      --border: #e5e5e5;
+      --radius: 12px;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -45,956 +42,406 @@
       color: var(--text);
       font-family: 'Inter', -apple-system, sans-serif;
       line-height: 1.65;
-      overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
-    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
-    .container-narrow { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
 
     /* ─── NAV ─── */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      padding: 14px 0;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(24px);
-      border-bottom: 1px solid rgba(0,0,0,0.05);
+      padding: 12px 0;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
     }
 
     nav .container { display: flex; justify-content: space-between; align-items: center; }
-
-    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-
-    .logo-text { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 20px; color: var(--text); letter-spacing: -0.5px; }
-
-    .nav-links { display: flex; align-items: center; gap: 28px; }
-    .nav-links a { font-size: 14px; color: var(--text-soft); text-decoration: none; font-weight: 500; transition: color 0.2s; }
-    .nav-links a:hover { color: var(--blue); }
+    .nav-left { font-weight: 800; font-size: 16px; color: var(--text); text-decoration: none; }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-right a { font-size: 13px; color: var(--text-soft); text-decoration: none; font-weight: 500; }
+    .nav-right a:hover { color: var(--text); }
 
     .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-size: 14px; padding: 10px 28px;
-      border-radius: 100px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; padding: 8px 20px;
+      border-radius: 8px; cursor: pointer;
       font-weight: 600; text-decoration: none; border: none;
-      transition: all 0.25s;
+      transition: all 0.2s;
     }
 
-    .btn-fill {
-      background: var(--blue); color: white !important;
-    }
-
-    .btn-fill:hover {
-      background: var(--blue-dark); color: white !important;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(10,102,194,0.25);
-    }
-
-    .btn-fill:visited { color: white !important; }
-
-    .btn-outline {
-      background: transparent; color: var(--blue);
-      border: 1.5px solid var(--blue);
-    }
-
-    .btn-outline:hover { background: var(--blue-glow); }
-
-    .btn-dark {
-      background: var(--text); color: white !important;
-    }
-
-    .btn-dark:hover {
-      background: #333; color: white !important;
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-    }
-
-    .btn-dark:visited { color: white !important; }
+    .btn-primary { background: var(--text); color: white !important; }
+    .btn-primary:hover { background: #333; transform: translateY(-1px); }
+    .btn-primary:visited { color: white !important; }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--text); }
 
     /* ─── HERO ─── */
     .hero {
-      padding: 180px 0 80px;
+      padding: 140px 0 80px;
       text-align: center;
-      position: relative;
-      overflow: hidden;
     }
 
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 100%;
-      background: linear-gradient(180deg, var(--warm) 0%, var(--bg) 100%);
-      z-index: -1;
-    }
-
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
+    .hero-badge {
+      display: inline-block;
+      font-size: 12px;
       font-weight: 600;
-      color: var(--blue);
-      margin-bottom: 28px;
-      opacity: 0;
-      animation: fadeUp 0.7s ease forwards;
-    }
-
-    .hero-eyebrow .dot {
-      width: 8px; height: 8px;
-      background: var(--gold);
-      border-radius: 50%;
-      animation: pulse 2s ease infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(1.3); }
+      padding: 6px 14px;
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--text-mid);
+      margin-bottom: 24px;
     }
 
     .hero h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(42px, 6vw, 72px);
-      line-height: 1.08;
-      font-weight: 900;
-      letter-spacing: -2px;
-      max-width: 800px;
-      margin: 0 auto 28px;
-      opacity: 0;
-      animation: fadeUp 0.7s ease 0.1s forwards;
-    }
-
-    .hero h1 em {
-      font-style: italic;
-      background: linear-gradient(135deg, var(--blue), var(--blue-light));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-size: clamp(36px, 5vw, 56px);
+      line-height: 1.1;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      max-width: 700px;
+      margin: 0 auto 20px;
     }
 
     .hero-sub {
-      font-size: 20px;
+      font-size: 18px;
       color: var(--text-mid);
-      max-width: 560px;
-      margin: 0 auto 44px;
+      max-width: 520px;
+      margin: 0 auto 36px;
       line-height: 1.7;
-      opacity: 0;
-      animation: fadeUp 0.7s ease 0.2s forwards;
     }
 
-    .hero-actions {
+    .hero-install {
       display: flex;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-      opacity: 0;
-      animation: fadeUp 0.7s ease 0.3s forwards;
-    }
-
-    .hero-social-proof {
-      margin-top: 48px;
-      font-size: 14px;
-      color: var(--text-faint);
-      opacity: 0;
-      animation: fadeUp 0.7s ease 0.45s forwards;
-    }
-
-    .hero-social-proof strong { color: var(--text-soft); }
-
-    /* Powered by badge */
-    .powered-by {
-      display: inline-flex;
+      flex-direction: column;
       align-items: center;
-      gap: 8px;
-      margin-top: 24px;
-      padding: 8px 18px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 100px;
-      font-size: 13px;
-      color: var(--text-soft);
-      opacity: 0;
-      animation: fadeUp 0.7s ease 0.5s forwards;
-    }
-
-    .powered-by svg { flex-shrink: 0; }
-    .powered-by a { color: var(--text); font-weight: 600; text-decoration: none; }
-    .powered-by a:hover { color: var(--blue); }
-
-    /* Prereq banner */
-    .prereq {
-      padding: 60px 0;
-      background: var(--bg);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .prereq-box {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 32px 40px;
-      background: linear-gradient(135deg, #f7f3ee 0%, #f0ece5 100%);
-      border: 1px solid var(--warm-dark);
-      border-radius: var(--radius);
-    }
-
-    .prereq-icon {
-      width: 64px;
-      height: 64px;
-      background: var(--text);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      color: white;
-      font-size: 28px;
-    }
-
-    .prereq-content h3 {
-      font-size: 17px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .prereq-content p {
-      font-size: 14px;
-      color: var(--text-mid);
-      line-height: 1.6;
-      margin-bottom: 12px;
-    }
-
-    .prereq-install {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      background: var(--text);
-      color: #aaa;
-      padding: 8px 16px;
-      border-radius: 6px;
-      display: inline-block;
-    }
-
-    .prereq-install span { color: var(--blue-light); }
-
-    @media (max-width: 768px) {
-      .prereq-box { flex-direction: column; text-align: center; padding: 28px 24px; }
-    }
-
-    /* ─── MARQUEE ─── */
-    .marquee-section {
-      padding: 40px 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      overflow: hidden;
-    }
-
-    .marquee {
-      display: flex;
-      gap: 48px;
-      animation: scroll 30s linear infinite;
-      white-space: nowrap;
-    }
-
-    .marquee-item {
-      font-family: 'Playfair Display', serif;
-      font-size: 18px;
-      font-style: italic;
-      color: var(--text-faint);
-      flex-shrink: 0;
-    }
-
-    .marquee-item span { color: var(--gold); margin: 0 8px; }
-
-    @keyframes scroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    /* ─── STORY SECTION ─── */
-    .story {
-      padding: 120px 0;
-    }
-
-    .story-text {
-      max-width: 640px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .story-text h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 38px;
-      font-weight: 900;
-      letter-spacing: -1px;
-      line-height: 1.2;
-      margin-bottom: 28px;
-    }
-
-    .story-text p {
-      font-size: 18px;
-      color: var(--text-mid);
-      line-height: 1.8;
-      margin-bottom: 20px;
-    }
-
-    .story-text p strong { color: var(--text); }
-
-    .story-text .callout {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
-      font-style: italic;
-      color: var(--blue);
-      line-height: 1.4;
-      margin: 40px 0;
-      padding: 0 20px;
-    }
-
-    /* ─── TRANSFORMATION ─── */
-    .transformation {
-      padding: 100px 0;
-      background: var(--warm);
-    }
-
-    .transformation h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 38px;
-      font-weight: 900;
-      letter-spacing: -1px;
-      text-align: center;
-      margin-bottom: 56px;
-    }
-
-    .transform-grid {
-      display: grid;
-      grid-template-columns: 1fr 60px 1fr;
-      gap: 0;
-      align-items: start;
-    }
-
-    .transform-col h3 {
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      font-weight: 700;
+      gap: 10px;
       margin-bottom: 24px;
-      padding-bottom: 12px;
-    }
-
-    .transform-col.before h3 { color: #b44; border-bottom: 2px solid #b44; }
-    .transform-col.after h3 { color: #2a8; border-bottom: 2px solid #2a8; }
-
-    .transform-item {
-      padding: 16px 0;
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-      font-size: 16px;
-      line-height: 1.6;
-      color: var(--text-mid);
-    }
-
-    .transform-item:last-child { border-bottom: none; }
-
-    .transform-arrow {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding-top: 60px;
-      font-size: 24px;
-      color: var(--text-faint);
-    }
-
-    /* ─── PERSONAS ─── */
-    .personas {
-      padding: 120px 0;
-    }
-
-    .personas h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 38px;
-      font-weight: 900;
-      letter-spacing: -1px;
-      text-align: center;
-      margin-bottom: 16px;
-    }
-
-    .personas > .container > p {
-      text-align: center;
-      font-size: 18px;
-      color: var(--text-mid);
-      max-width: 500px;
-      margin: 0 auto 56px;
-    }
-
-    .persona-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .persona-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 36px 28px;
-      transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .persona-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      background: var(--blue);
-      transform: scaleX(0);
-      transition: transform 0.3s;
-    }
-
-    .persona-card:hover::before { transform: scaleX(1); }
-
-    .persona-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.06);
-    }
-
-    .persona-emoji { font-size: 36px; margin-bottom: 16px; }
-
-    .persona-card h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .persona-card p {
-      font-size: 15px;
-      color: var(--text-mid);
-      line-height: 1.65;
-    }
-
-    .persona-card .persona-quote {
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-      font-style: italic;
-      font-size: 14px;
-      color: var(--blue);
-    }
-
-    /* ─── HOW IT WORKS ─── */
-    .how {
-      padding: 120px 0;
-      background: var(--text);
-      color: white;
-    }
-
-    .how h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 38px;
-      font-weight: 900;
-      letter-spacing: -1px;
-      text-align: center;
-      margin-bottom: 16px;
-    }
-
-    .how > .container > p {
-      text-align: center;
-      font-size: 18px;
-      color: #888;
-      max-width: 480px;
-      margin: 0 auto 64px;
-    }
-
-    .journey {
-      display: flex;
-      gap: 0;
-      position: relative;
-    }
-
-    .journey::before {
-      content: '';
-      position: absolute;
-      top: 40px;
-      left: 20%;
-      right: 20%;
-      height: 2px;
-      background: rgba(255,255,255,0.08);
-    }
-
-    .journey-step {
-      flex: 1;
-      text-align: center;
-      padding: 0 16px;
-      position: relative;
-    }
-
-    .journey-number {
-      width: 80px; height: 80px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 24px;
-      font-family: 'Playfair Display', serif;
-      font-size: 32px;
-      font-weight: 900;
-      position: relative;
-      z-index: 1;
-    }
-
-    .journey-step:nth-child(1) .journey-number { background: rgba(10,102,194,0.15); color: var(--blue-light); }
-    .journey-step:nth-child(2) .journey-number { background: rgba(212,161,42,0.15); color: var(--gold-light); }
-    .journey-step:nth-child(3) .journey-number { background: rgba(80,200,120,0.15); color: #50c878; }
-
-    .journey-step h3 {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .journey-step p {
-      font-size: 14px;
-      color: #888;
-      line-height: 1.7;
-      max-width: 280px;
-      margin: 0 auto;
-    }
-
-    /* ─── TESTIMONIAL-STYLE POSTS ─── */
-    .examples {
-      padding: 120px 0;
-    }
-
-    .examples h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 38px;
-      font-weight: 900;
-      letter-spacing: -1px;
-      text-align: center;
-      margin-bottom: 16px;
-    }
-
-    .examples > .container > p {
-      text-align: center;
-      font-size: 18px;
-      color: var(--text-mid);
-      max-width: 480px;
-      margin: 0 auto 56px;
-    }
-
-    .example-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
-    }
-
-    .example-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 32px;
-      position: relative;
-    }
-
-    .example-card .ex-role {
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--blue);
-      margin-bottom: 16px;
-    }
-
-    .example-card .ex-hook {
-      font-family: 'Playfair Display', serif;
-      font-size: 20px;
-      font-weight: 700;
-      line-height: 1.3;
-      margin-bottom: 12px;
-    }
-
-    .example-card .ex-preview {
-      font-size: 15px;
-      color: var(--text-mid);
-      line-height: 1.7;
-      margin-bottom: 16px;
-    }
-
-    .example-card .ex-stats {
-      display: flex;
-      gap: 16px;
-      font-size: 13px;
-      color: var(--text-faint);
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-    }
-
-    .example-card .ex-stats strong { color: var(--text-soft); }
-
-    .example-badge {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 10px;
-      background: var(--blue-glow);
-      color: var(--blue);
-      border-radius: 100px;
-    }
-
-    /* ─── CTA ─── */
-    .cta {
-      padding: 120px 0;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-      background: var(--warm);
-    }
-
-    .cta h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(34px, 5vw, 52px);
-      font-weight: 900;
-      letter-spacing: -1.5px;
-      line-height: 1.1;
-      margin-bottom: 20px;
-    }
-
-    .cta h2 em {
-      font-style: italic;
-      background: linear-gradient(135deg, var(--blue), var(--blue-light));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .cta p {
-      font-size: 18px;
-      color: var(--text-mid);
-      max-width: 500px;
-      margin: 0 auto 40px;
-      line-height: 1.7;
-    }
-
-    .cta-actions {
-      display: flex;
-      justify-content: center;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
     }
 
     .install-box {
       display: inline-flex;
       align-items: center;
       background: var(--text);
-      border-radius: 10px;
+      border-radius: 8px;
       overflow: hidden;
-      max-width: fit-content;
     }
 
     .install-box code {
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
-      padding: 12px 16px;
-      color: #aaa;
+      padding: 10px 16px;
+      color: #999;
       white-space: nowrap;
     }
 
     .install-box code span { color: var(--blue-light); }
 
+    .install-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--text-soft);
+      text-transform: uppercase;
+    }
+
     .copy-btn {
-      padding: 14px 16px;
-      background: #2a2a2a;
+      padding: 12px 14px;
+      background: #222;
       border: none;
       color: #666;
       cursor: pointer;
       transition: all 0.2s;
       border-left: 1px solid #333;
     }
-
     .copy-btn:hover { background: #333; color: #fff; }
-    .copy-btn.copied { color: var(--blue-light); }
+    .copy-btn.copied { color: var(--green); }
 
-    .cta-note { font-size: 14px; color: var(--text-faint); margin-top: 8px; }
+    .hero-note {
+      font-size: 13px;
+      color: var(--text-soft);
+    }
 
-    /* ─── FOOTER ─── */
-    footer {
-      padding: 48px 0;
+    .hero-note a { color: var(--text-mid); }
+
+    /* ─── WHAT IT DOES ─── */
+    .what {
+      padding: 80px 0;
       border-top: 1px solid var(--border);
     }
 
-    footer .container { display: flex; justify-content: space-between; align-items: center; }
-    footer p { font-size: 13px; color: var(--text-faint); }
-    footer a { color: var(--text-soft); text-decoration: none; font-size: 13px; transition: color 0.2s; }
-    footer a:hover { color: var(--blue); }
-    .footer-links { display: flex; gap: 24px; }
-
-    /* ─── ANIMATIONS ─── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(28px); }
-      to { opacity: 1; transform: translateY(0); }
+    .what h2 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 40px;
+      text-align: center;
     }
 
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-      transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
     }
 
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ─── RESPONSIVE ─── */
-    /* ─── LIVE CHAT DEMOS ─── */
-    .live-demos {
-      padding: 100px 0;
-      background: var(--warm);
-    }
-
-    .live-chat {
-      max-width: 720px;
-      margin: 0 auto 40px;
-      background: var(--bg);
+    .feature-card {
+      padding: 28px;
+      background: var(--bg-soft);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      overflow: hidden;
     }
 
-    .live-chat:last-child { margin-bottom: 0; }
-
-    .live-chat-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 24px;
-      background: #f8f8f8;
-      border-bottom: 1px solid var(--border);
-      font-size: 14px;
-      color: var(--text-soft);
-    }
-
-    .live-chat-badge {
-      font-size: 11px;
+    .feature-card h3 {
+      font-size: 15px;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      padding: 4px 10px;
-      background: var(--blue);
-      color: white;
-      border-radius: 100px;
-    }
-
-    .live-chat-body { padding: 24px; }
-
-    .chat-msg {
-      margin-bottom: 20px;
-    }
-
-    .chat-msg:last-child { margin-bottom: 0; }
-
-    .chat-role {
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
       margin-bottom: 6px;
-    }
-
-    .chat-msg.user .chat-role { color: var(--blue); }
-    .chat-msg.ai .chat-role { color: var(--gold); }
-
-    .chat-msg.user .chat-text {
-      background: var(--blue-glow);
-      border: 1px solid rgba(10,102,194,0.12);
-      border-radius: 12px 12px 12px 4px;
-      padding: 14px 18px;
-      font-size: 15px;
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    .chat-msg.ai .chat-text {
-      background: #fafafa;
-      border: 1px solid var(--border);
-      border-radius: 12px 12px 4px 12px;
-      padding: 14px 18px;
-      font-size: 15px;
-      color: var(--text-mid);
-      line-height: 1.7;
-    }
-
-    .chat-msg.ai .chat-text strong { color: var(--text); }
-
-    .chat-result {
-      margin-top: 24px;
-      border: 2px solid var(--blue);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
-    .chat-result-label {
-      background: var(--blue);
-      color: white;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      padding: 10px 18px;
-    }
-
-    .chat-result-post {
-      padding: 20px;
-      font-size: 15px;
-      line-height: 1.8;
-      color: var(--text);
-    }
-
-    .chat-seemore {
-      color: var(--text-faint);
-      font-size: 14px;
-    }
-
-    .chat-result-stats {
       display: flex;
-      gap: 16px;
-      padding: 12px 20px;
-      border-top: 1px solid var(--border);
-      font-size: 13px;
-      color: var(--text-soft);
-    }
-
-    .chat-result-stats strong { color: var(--text); }
-
-    /* ─── TUTORIAL ─── */
-    .tutorial {
-      padding: 100px 0;
-      background: var(--bg);
-    }
-
-    .tutorial-steps {
-      display: flex;
-      flex-direction: column;
-      gap: 64px;
-    }
-
-    .tutorial-step {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
       align-items: center;
+      gap: 8px;
     }
 
-    .tutorial-step.reverse { direction: rtl; }
-    .tutorial-step.reverse > * { direction: ltr; }
-
-    .tut-left {
-      display: flex;
-      gap: 20px;
+    .feature-card h3 code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      background: var(--text);
+      color: var(--blue-light);
+      padding: 2px 8px;
+      border-radius: 4px;
     }
 
-    .tut-number {
-      font-family: 'Playfair Display', serif;
-      font-size: 56px;
-      font-weight: 900;
-      color: var(--blue);
-      opacity: 0.15;
-      line-height: 1;
-      flex-shrink: 0;
-      width: 48px;
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-mid);
+      line-height: 1.65;
     }
 
-    .tut-content h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 10px;
+    /* ─── DEMO ─── */
+    .demo {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
     }
 
-    .tut-content p {
+    .demo h2 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .demo > .container > p {
+      text-align: center;
       font-size: 15px;
       color: var(--text-mid);
-      line-height: 1.7;
-      margin-bottom: 16px;
+      margin-bottom: 40px;
     }
 
-    .tut-code {
-      background: var(--text);
-      border-radius: 8px;
-      padding: 12px 18px;
-      margin-bottom: 10px;
-      overflow-x: auto;
+    .demo-tabs {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
     }
 
-    .tut-code code {
-      font-family: 'JetBrains Mono', monospace;
+    .demo-tab {
       font-size: 13px;
-      color: #ccc;
-      white-space: nowrap;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--text-mid);
     }
 
-    .tut-note {
-      font-size: 13px;
-      color: var(--text-faint);
-    }
+    .demo-tab:hover { border-color: var(--text); color: var(--text); }
+    .demo-tab.active { background: var(--text); color: white; border-color: var(--text); }
 
-    /* Tutorial terminal mockups */
-    .tut-terminal {
+    .demo-panel { display: none; }
+    .demo-panel.active { display: block; }
+
+    .terminal {
+      max-width: 700px;
+      margin: 0 auto;
       background: #1a1d21;
-      border-radius: 12px;
+      border-radius: var(--radius);
       overflow: hidden;
       border: 1px solid #2a2d31;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
     }
 
-    .tut-terminal-bar {
+    .terminal-bar {
       display: flex;
       gap: 6px;
-      padding: 12px 16px;
+      padding: 10px 14px;
       background: #22252a;
       border-bottom: 1px solid #2a2d31;
     }
 
-    .tut-terminal-bar span {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #3a3d41;
+    .terminal-bar span {
+      width: 10px; height: 10px; border-radius: 50%; background: #3a3d41;
     }
+    .terminal-bar span:nth-child(1) { background: #f04242; }
+    .terminal-bar span:nth-child(2) { background: #f0c442; }
+    .terminal-bar span:nth-child(3) { background: #42f066; }
 
-    .tut-terminal-bar span:nth-child(1) { background: #f04242; }
-    .tut-terminal-bar span:nth-child(2) { background: #f0c442; }
-    .tut-terminal-bar span:nth-child(3) { background: #42f066; }
-
-    .tut-terminal-body {
+    .terminal-body {
       padding: 18px 20px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
       line-height: 1.9;
     }
 
-    .tut-line { color: #d4d4d4; }
-    .tut-dim { color: #666; }
-    .tut-green { color: #50c878; }
-    .tut-blue { color: var(--blue-light); }
-    .tut-gold { color: var(--gold-light); }
+    .t-line { color: #d4d4d4; }
+    .t-dim { color: #666; }
+    .t-green { color: var(--green); }
+    .t-blue { color: var(--blue-light); }
+    .t-gold { color: var(--gold); }
+    .t-result {
+      margin-top: 12px;
+      padding: 14px 16px;
+      background: #22252a;
+      border-radius: 8px;
+      border-left: 3px solid var(--blue-light);
+    }
+    .t-result .t-line { font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.7; }
 
-    @media (max-width: 768px) {
-      .tutorial-step { grid-template-columns: 1fr; gap: 24px; }
-      .tutorial-step.reverse { direction: ltr; }
-      .tut-number { font-size: 40px; width: 36px; }
+    /* ─── HOW ─── */
+    .how {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+      background: var(--bg-soft);
     }
 
+    .how h2 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .steps {
+      display: flex;
+      gap: 24px;
+      max-width: 700px;
+      margin: 0 auto;
+      flex-direction: column;
+    }
+
+    .step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 32px; height: 32px;
+      background: var(--text);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .step-content h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .step-content p { font-size: 14px; color: var(--text-mid); line-height: 1.6; }
+
+    .step-code {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      background: var(--text);
+      color: #ccc;
+      padding: 6px 14px;
+      border-radius: 6px;
+      margin-top: 8px;
+    }
+
+    .step-code span { color: var(--blue-light); }
+
+    /* ─── WHO ─── */
+    .who {
+      padding: 80px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .who h2 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .who-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .who-card {
+      padding: 24px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .who-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .who-card p { font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+
+    /* ─── CTA ─── */
+    .cta {
+      padding: 80px 0;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      background: var(--bg-soft);
+    }
+
+    .cta h2 {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .cta > .container > p {
+      font-size: 16px;
+      color: var(--text-mid);
+      margin-bottom: 32px;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    footer .container { display: flex; justify-content: space-between; align-items: center; }
+    footer p { font-size: 12px; color: var(--text-soft); }
+    footer a { color: var(--text-mid); text-decoration: none; font-size: 12px; }
+    footer a:hover { color: var(--text); }
+    .footer-links { display: flex; gap: 20px; }
+
+    /* ─── ANIMATIONS ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── RESPONSIVE ─── */
     @media (max-width: 768px) {
-      .hero { padding: 140px 0 60px; }
-      .hero h1 { letter-spacing: -1px; }
-      .transform-grid { grid-template-columns: 1fr; }
-      .transform-arrow { transform: rotate(90deg); padding: 16px 0; }
-      .persona-grid { grid-template-columns: 1fr; }
-      .journey { flex-direction: column; gap: 40px; }
-      .journey::before { display: none; }
-      .example-grid { grid-template-columns: 1fr; }
-      .nav-links a:not(.btn) { display: none; }
+      .hero { padding: 120px 0 60px; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .who-grid { grid-template-columns: 1fr; }
+      .nav-right a:not(.btn) { display: none; }
     }
   </style>
 </head>
@@ -1003,16 +450,12 @@
 <!-- NAV -->
 <nav>
   <div class="container">
-    <a href="#" class="logo">
-      <span class="logo-text">Career Brand</span>
-    </a>
-    <div class="nav-links">
-      <a href="#transformation">Why it works</a>
-      <a href="#tutorial">Setup guide</a>
-      <a href="#personas">Who it's for</a>
-      <a href="#examples">Examples</a>
-      <a href="https://github.com/asaferdman23/career-brand-plugin" target="_blank" class="btn btn-outline" style="padding: 8px 18px; font-size: 13px; gap: 6px;" onclick="track('CTA Click', {location: 'nav-github'})">&#11088; GitHub</a>
-      <a href="#tutorial" class="btn btn-fill" onclick="track('CTA Click', {location: 'nav'})">Get Started Free</a>
+    <a href="#" class="nav-left">Career Brand</a>
+    <div class="nav-right">
+      <a href="#demo">See it work</a>
+      <a href="#how">Setup</a>
+      <a href="https://github.com/asaferdman23/career-brand-plugin" target="_blank" class="btn btn-ghost" onclick="track('CTA Click', {location: 'nav-github'})">GitHub</a>
+      <a href="#install" class="btn btn-primary" onclick="track('CTA Click', {location: 'nav'})">Install</a>
     </div>
   </div>
 </nav>
@@ -1020,550 +463,229 @@
 <!-- HERO -->
 <section class="hero">
   <div class="container">
-    <h1>You're doing <em>incredible work.</em><br>Nobody knows.</h1>
-    <p class="hero-sub">Career Brand scans your LinkedIn, understands your story, and helps you build the personal brand that gets you recognized, recruited, and promoted. Not someday. Now.</p>
-    <div class="hero-actions">
-      <a href="#tutorial" class="btn btn-fill" style="padding: 14px 36px; font-size: 16px;" onclick="track('CTA Click', {location: 'hero'})">Start Building Your Brand</a>
-      <a href="#transformation" class="btn btn-outline" onclick="track('CTA Click', {location: 'hero-secondary'})">See the transformation</a>
-    </div>
-    <p class="hero-social-proof">Works for <strong>engineers</strong>, <strong>product managers</strong>, <strong>founders</strong>, <strong>career changers</strong>, and anyone who deserves to be seen.</p>
-    <div class="powered-by">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Powered by <a href="https://claude.ai/claude-code" target="_blank">Claude Code</a> — Anthropic's AI coding agent
+    <div class="hero-badge">Plugin for Claude Code</div>
+    <h1>Turn your career into LinkedIn posts that actually sound like you</h1>
+    <p class="hero-sub">Paste your experience. Tell it a raw idea. Get a post with your real voice — not "I'm thrilled to announce" garbage. Also: career advice, interview prep, and monthly content planning.</p>
+    <div class="hero-install" id="install">
+      <div class="install-label">Install in Claude Code</div>
+      <div class="install-box">
+        <code><span>$</span> claude plugin install asaferdman23/career-brand-plugin</code>
+        <button class="copy-btn" onclick="copyText(this, 'claude plugin install asaferdman23/career-brand-plugin')" title="Copy">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        </button>
+      </div>
+      <p class="hero-note">Requires <a href="https://docs.anthropic.com/en/docs/claude-code" target="_blank">Claude Code</a> (Anthropic's CLI agent). Free plugin, open source, MIT licensed.</p>
     </div>
   </div>
 </section>
 
-<!-- TUTORIAL -->
-<section class="tutorial" id="tutorial">
+<!-- WHAT IT DOES -->
+<section class="what">
   <div class="container">
-    <div class="section-label reveal" style="text-align:center">Get Started In 3 Minutes</div>
-    <h2 class="reveal" style="font-family:'Playfair Display',serif;font-size:38px;font-weight:900;letter-spacing:-1px;text-align:center;margin-bottom:16px;">How to set up Career Brand</h2>
-    <p class="reveal" style="text-align:center;font-size:18px;color:var(--text-mid);max-width:520px;margin:0 auto 56px;">No account needed. No signup. Just your terminal and your LinkedIn URL.</p>
-
-    <div class="tutorial-steps">
-
-      <!-- Step 1 -->
-      <div class="tutorial-step reveal">
-        <div class="tut-left">
-          <div class="tut-number">1</div>
-          <div class="tut-content">
-            <h3>Install Claude Code</h3>
-            <p>Claude Code is Anthropic's free AI agent that runs in your terminal. If you already have it, skip to step 2.</p>
-            <div class="tut-code">
-              <code>$ npm install -g @anthropic-ai/claude-code</code>
-            </div>
-            <div class="tut-note">Requires Node.js 18+. Takes about 30 seconds.</div>
-          </div>
-        </div>
-        <div class="tut-visual">
-          <div class="tut-terminal">
-            <div class="tut-terminal-bar"><span></span><span></span><span></span></div>
-            <div class="tut-terminal-body">
-              <div class="tut-line"><span class="tut-green">$</span> npm install -g @anthropic-ai/claude-code</div>
-              <div class="tut-line tut-dim">added 1 package in 12s</div>
-              <div class="tut-line"><span class="tut-green">$</span> claude</div>
-              <div class="tut-line tut-dim">Welcome to Claude Code v2.1...</div>
-              <div class="tut-line tut-blue">&#10003; Ready</div>
-            </div>
-          </div>
-        </div>
+    <h2 class="reveal">Two commands. That's the whole plugin.</h2>
+    <div class="feature-grid">
+      <div class="feature-card reveal">
+        <h3><code>/career-brand:brand</code> Personal branding</h3>
+        <p>Create LinkedIn posts from a raw idea. It asks shaping questions, gives you hook options, drafts in a storyteller voice. Also: plan your month, brainstorm ideas, set post reminders.</p>
       </div>
-
-      <!-- Step 2 -->
-      <div class="tutorial-step reverse reveal">
-        <div class="tut-left">
-          <div class="tut-number">2</div>
-          <div class="tut-content">
-            <h3>Add the Career Brand plugin</h3>
-            <p>One command adds the plugin to your Claude Code. It's free, open source, and works immediately.</p>
-            <div class="tut-code">
-              <code>$ claude plugin add career-brand</code>
-            </div>
-            <div class="tut-note">This gives you two new commands: /brand and /career</div>
-          </div>
-        </div>
-        <div class="tut-visual">
-          <div class="tut-terminal">
-            <div class="tut-terminal-bar"><span></span><span></span><span></span></div>
-            <div class="tut-terminal-body">
-              <div class="tut-line"><span class="tut-green">$</span> claude plugin add career-brand</div>
-              <div class="tut-line tut-dim">Downloading career-brand-plugin...</div>
-              <div class="tut-line tut-blue">&#10003; Plugin installed</div>
-              <div class="tut-line tut-dim">  /brand  — Personal branding</div>
-              <div class="tut-line tut-dim">  /career — Career co-pilot</div>
-            </div>
-          </div>
-        </div>
+      <div class="feature-card reveal">
+        <h3><code>/career-brand:career</code> Career co-pilot</h3>
+        <p>Career direction, job search strategy, networking playbook, interview prep with mock questions. If you have a side project, it accounts for both paths.</p>
       </div>
-
-      <!-- Step 3 -->
-      <div class="tutorial-step reveal">
-        <div class="tut-left">
-          <div class="tut-number">3</div>
-          <div class="tut-content">
-            <h3>Run /brand and paste your LinkedIn</h3>
-            <p>The AI scans your entire LinkedIn profile — experience, skills, posts, engagement patterns. Builds your career profile in 90 seconds. Then you're ready to create content.</p>
-            <div class="tut-code">
-              <code>$ /brand</code>
-            </div>
-            <div class="tut-note">It will ask for your LinkedIn URL, then 3 quick follow-up questions.</div>
-          </div>
-        </div>
-        <div class="tut-visual">
-          <div class="tut-terminal">
-            <div class="tut-terminal-bar"><span></span><span></span><span></span></div>
-            <div class="tut-terminal-body">
-              <div class="tut-line"><span class="tut-green">&gt;</span> /brand</div>
-              <div class="tut-line tut-blue">What's your LinkedIn URL?</div>
-              <div class="tut-line"><span class="tut-green">&gt;</span> linkedin.com/in/yourname</div>
-              <div class="tut-line tut-dim">Scanning your profile...</div>
-              <div class="tut-line tut-dim">Reading experience, skills, posts...</div>
-              <div class="tut-line tut-blue">&#10003; Profile loaded!</div>
-              <div class="tut-line" style="margin-top:8px"><span class="tut-gold">Your Brand Snapshot:</span></div>
-              <div class="tut-line tut-dim">Strengths: Strong technical depth</div>
-              <div class="tut-line tut-dim">Gap: No storytelling in posts</div>
-              <div class="tut-line tut-dim">Quick win: Your career change story</div>
-            </div>
-          </div>
-        </div>
+      <div class="feature-card reveal">
+        <h3>Paste your profile, not your password</h3>
+        <p>Copy-paste your LinkedIn about section, resume, or just type your experience. No browser access needed, no login required. Works for yourself or for someone else.</p>
       </div>
-
-      <!-- Step 4 -->
-      <div class="tutorial-step reverse reveal">
-        <div class="tut-left">
-          <div class="tut-number">4</div>
-          <div class="tut-content">
-            <h3>Create your first post</h3>
-            <p>Give it any raw idea — something you built, learned, or experienced. It asks a couple of shaping questions, then drafts a post with multiple hook options. Pick one, copy, paste to LinkedIn. Done.</p>
-            <div class="tut-code">
-              <code>$ /brand I just led a product launch that doubled activation</code>
-            </div>
-            <div class="tut-note">You can also type /brand plan my month or /brand ideas</div>
-          </div>
-        </div>
-        <div class="tut-visual">
-          <div class="tut-terminal">
-            <div class="tut-terminal-bar"><span></span><span></span><span></span></div>
-            <div class="tut-terminal-body">
-              <div class="tut-line"><span class="tut-green">&gt;</span> /brand I led a launch that doubled activation</div>
-              <div class="tut-line tut-blue">What almost went wrong?</div>
-              <div class="tut-line"><span class="tut-green">&gt;</span> We almost killed it. Data looked terrible.</div>
-              <div class="tut-line" style="margin-top:8px"><span class="tut-gold">Hook A:</span> <span class="tut-dim">"We almost killed our best feature."</span></div>
-              <div class="tut-line"><span class="tut-gold">Hook B:</span> <span class="tut-dim">"The metric that saved our launch wasn't in any dashboard."</span></div>
-              <div class="tut-line"><span class="tut-gold">Hook C:</span> <span class="tut-dim">"Two weeks before launch, I had to convince my VP not to pull the plug."</span></div>
-              <div class="tut-line" style="margin-top:8px"><span class="tut-green">&gt;</span> B</div>
-              <div class="tut-line tut-blue">&#10003; Post ready. Copied to clipboard.</div>
-            </div>
-          </div>
-        </div>
+      <div class="feature-card reveal">
+        <h3>Remembers your story</h3>
+        <p>Saves your career profile, goals, content calendar, and what posts performed well. Every post gets better because it knows your arc, your voice, your goals.</p>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- SCROLLING MARQUEE -->
-<div class="marquee-section">
-  <div class="marquee">
-    <span class="marquee-item">"I finally sound like me on LinkedIn"</span>
-    <span class="marquee-item"><span>&#9670;</span></span>
-    <span class="marquee-item">"Went from 12 reactions to 200+ in one month"</span>
-    <span class="marquee-item"><span>&#9670;</span></span>
-    <span class="marquee-item">"Got 3 recruiter messages after my first /brand post"</span>
-    <span class="marquee-item"><span>&#9670;</span></span>
-    <span class="marquee-item">"This turned my career change into my biggest advantage"</span>
-    <span class="marquee-item"><span>&#9670;</span></span>
-    <span class="marquee-item">"My team lead asked how I got so good at writing"</span>
-    <span class="marquee-item"><span>&#9670;</span></span>
-    <span class="marquee-item">"I finally sound like me on LinkedIn"</span>
-    <span class="marquee-item"><span>&#9670;</span></span>
-    <span class="marquee-item">"Went from 12 reactions to 200+ in one month"</span>
-    <span class="marquee-item"><span>&#9670;</span></span>
-    <span class="marquee-item">"Got 3 recruiter messages after my first /brand post"</span>
-    <span class="marquee-item"><span>&#9670;</span></span>
-    <span class="marquee-item">"This turned my career change into my biggest advantage"</span>
-    <span class="marquee-item"><span>&#9670;</span></span>
-    <span class="marquee-item">"My team lead asked how I got so good at writing"</span>
-    <span class="marquee-item"><span>&#9670;</span></span>
-  </div>
-</div>
-
-<!-- STORY -->
-<section class="story">
-  <div class="story-text reveal">
-    <h2>The people getting promoted aren't smarter than you.</h2>
-    <p>They're just <strong>visible</strong>. They share what they're working on. They tell stories about their wins AND their failures. They've built a reputation that precedes them into every meeting, every interview, every opportunity.</p>
-    <p>Meanwhile, you — the one actually shipping the work, solving the hard problems, making things happen — you're invisible. Your LinkedIn is a graveyard of certification announcements nobody reads.</p>
-    <div class="callout">"The best ability is visibility."</div>
-    <p>Career Brand changes that. It doesn't write generic AI posts. It <strong>learns your real story</strong> — scans your LinkedIn, understands your career arc, your unique background, your goals — and helps you tell it in a way that makes people stop scrolling.</p>
-  </div>
-</section>
-
-<!-- TRANSFORMATION -->
-<section class="transformation" id="transformation">
+<!-- DEMO -->
+<section class="demo" id="demo">
   <div class="container">
-    <h2 class="reveal">The shift that changes everything</h2>
-    <div class="transform-grid reveal">
-      <div class="transform-col before">
-        <h3>Before Career Brand</h3>
-        <div class="transform-item">"Excited to share I've earned my certification!"</div>
-        <div class="transform-item">Post once every 3 months when something "big" happens</div>
-        <div class="transform-item">15 reactions from your mom and college friends</div>
-        <div class="transform-item">Recruiters don't know you exist</div>
-        <div class="transform-item">Apply to 50 jobs, hear back from 2</div>
-        <div class="transform-item">Your amazing background? Buried in your resume.</div>
+    <h2 class="reveal">See what it actually looks like</h2>
+    <p class="reveal">Real conversations. Real output. Pick a scenario.</p>
+
+    <div class="demo-tabs reveal">
+      <button class="demo-tab active" onclick="showDemo('engineer')">Engineer post</button>
+      <button class="demo-tab" onclick="showDemo('career-change')">Career changer</button>
+      <button class="demo-tab" onclick="showDemo('career-eval')">Job evaluation</button>
+      <button class="demo-tab" onclick="showDemo('plan')">Plan my month</button>
+    </div>
+
+    <!-- Engineer post -->
+    <div class="demo-panel active" id="demo-engineer">
+      <div class="terminal reveal">
+        <div class="terminal-bar"><span></span><span></span><span></span></div>
+        <div class="terminal-body">
+          <div class="t-line"><span class="t-green">&gt;</span> /career-brand:brand I built an AI feature that reimagines event photos using DALL-E</div>
+          <div class="t-line t-blue">What's the personal angle? What happened to YOU while building this?</div>
+          <div class="t-line"><span class="t-green">&gt;</span> Spent 3 nights debugging why DALL-E kept generating cartoons instead of realistic photos. One word in the prompt fixed it.</div>
+          <div class="t-line t-blue">Who should care — engineers building with AI, or broader?</div>
+          <div class="t-line"><span class="t-green">&gt;</span> Engineers who build with AI tools</div>
+          <div class="t-line" style="margin-top:8px"><span class="t-gold">Hook A:</span> <span class="t-dim">"DALL-E kept giving me cartoon birthday parties. I asked for corporate galas."</span></div>
+          <div class="t-line"><span class="t-gold">Hook B:</span> <span class="t-dim">"3 nights. 47 prompt iterations. One word changed everything."</span></div>
+          <div class="t-line"><span class="t-gold">Hook C:</span> <span class="t-dim">"The hardest part of building with AI isn't the AI."</span></div>
+          <div class="t-line"><span class="t-green">&gt;</span> B</div>
+          <div class="t-result">
+            <div class="t-line">3 nights. 47 prompt iterations. One word changed everything.</div>
+            <div class="t-line" style="margin-top:8px; color:#999">I've been building an AI feature that generates visual variations of event photos. The idea was simple. The execution was humbling. DALL-E kept generating cartoons — literal cartoon birthday parties when I asked for corporate galas...</div>
+            <div class="t-line" style="margin-top:8px"><span class="t-blue">Ready to post. Copied to clipboard.</span></div>
+          </div>
+        </div>
       </div>
-      <div class="transform-arrow">&#10132;</div>
-      <div class="transform-col after">
-        <h3>After Career Brand</h3>
-        <div class="transform-item">Stories that make decision-makers stop and think</div>
-        <div class="transform-item">Consistent rhythm that keeps you top-of-mind</div>
-        <div class="transform-item">Engagement from people who can actually hire you</div>
-        <div class="transform-item">Recruiters reach out because they've seen your posts</div>
-        <div class="transform-item">Opportunities come to you, not the other way around</div>
-        <div class="transform-item">Your unique journey becomes your unfair advantage</div>
+    </div>
+
+    <!-- Career changer -->
+    <div class="demo-panel" id="demo-career-change">
+      <div class="terminal reveal">
+        <div class="terminal-bar"><span></span><span></span><span></span></div>
+        <div class="terminal-body">
+          <div class="t-line"><span class="t-green">&gt;</span> /career-brand:brand I want to post about my transition from professional basketball to tech</div>
+          <div class="t-line t-blue">What's one specific skill from basketball you use every day as an engineer?</div>
+          <div class="t-line"><span class="t-green">&gt;</span> Film review. We'd watch game tape for hours analyzing plays. Now I do the same with code reviews.</div>
+          <div class="t-line t-blue">That's the connection nobody sees. Targeting career changers, hiring managers, or both?</div>
+          <div class="t-line"><span class="t-green">&gt;</span> Both</div>
+          <div class="t-line" style="margin-top:8px"><span class="t-gold">Hook A:</span> <span class="t-dim">"8 years on the court taught me more about engineering than any bootcamp."</span></div>
+          <div class="t-line"><span class="t-gold">Hook B:</span> <span class="t-dim">"People ask why I left sports for tech. They think it's a left turn. It's a straight line."</span></div>
+          <div class="t-line"><span class="t-green">&gt;</span> B</div>
+          <div class="t-result">
+            <div class="t-line">People ask why I left sports for tech. They think it's a left turn. It's a straight line.</div>
+            <div class="t-line" style="margin-top:8px; color:#999">For 8 years I played professional basketball. Nobody talks about how much of basketball is NOT playing basketball. It's film review. Hours of watching tape, finding patterns, understanding why a play worked or fell apart...</div>
+            <div class="t-line" style="margin-top:8px"><span class="t-blue">Ready to post. Copied to clipboard.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job evaluation -->
+    <div class="demo-panel" id="demo-career-eval">
+      <div class="terminal reveal">
+        <div class="terminal-bar"><span></span><span></span><span></span></div>
+        <div class="terminal-body">
+          <div class="t-line"><span class="t-green">&gt;</span> /career-brand:career I got an offer for Head of Product at an AI startup. 40% raise. But my side project is gaining traction.</div>
+          <div class="t-line t-dim" style="margin-top:4px">Dispatching career advisor...</div>
+          <div class="t-line" style="margin-top:8px"><span class="t-gold">Fit Score: 7/10</span></div>
+          <div class="t-line" style="margin-top:8px"><span class="t-blue">What's good:</span> <span class="t-dim">Title jump is significant. AI startup validates your side-project skills. Comp bump gives more runway.</span></div>
+          <div class="t-line" style="margin-top:4px"><span class="t-blue">Red flag:</span> <span class="t-dim">Early-stage AI startups expect 60+ hr weeks. That kills your side project momentum.</span></div>
+          <div class="t-line" style="margin-top:4px"><span class="t-blue">The move:</span> <span class="t-dim">Counter with a 4-day week. "I do my best strategic work when I have space to think." If they say no, that tells you about the culture.</span></div>
+          <div class="t-line" style="margin-top:4px"><span class="t-blue">Content angle:</span> <span class="t-dim">Post about how you evaluate opportunities. Signals executive thinking to future employers.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plan my month -->
+    <div class="demo-panel" id="demo-plan">
+      <div class="terminal reveal">
+        <div class="terminal-bar"><span></span><span></span><span></span></div>
+        <div class="terminal-body">
+          <div class="t-line"><span class="t-green">&gt;</span> /career-brand:brand plan my month</div>
+          <div class="t-line t-dim">Analyzing your goals, recent work, and what resonated before...</div>
+          <div class="t-line" style="margin-top:8px"><span class="t-gold">Your April content calendar:</span></div>
+          <div class="t-line" style="margin-top:6px"><span class="t-blue">Week 1</span></div>
+          <div class="t-line t-dim">Mon — "The debugging trick nobody taught me" — builder story</div>
+          <div class="t-line t-dim">Thu — Your team win from last sprint — career reflection</div>
+          <div class="t-line" style="margin-top:6px"><span class="t-blue">Week 2</span></div>
+          <div class="t-line t-dim">Tue — Hot take on AI code assistants — thought leadership</div>
+          <div class="t-line t-dim">Fri — The moment you knew tech was right — personal story</div>
+          <div class="t-line" style="margin-top:6px"><span class="t-blue">Week 3</span></div>
+          <div class="t-line t-dim">Mon — What you shipped this month — build-in-public</div>
+          <div class="t-line t-dim">Wed — Networking lesson that changed your approach</div>
+          <div class="t-line" style="margin-top:6px"><span class="t-blue">Week 4</span></div>
+          <div class="t-line t-dim">Tue — Contrarian opinion about your industry</div>
+          <div class="t-line t-dim">Thu — End-of-month reflection — what you learned</div>
+          <div class="t-line" style="margin-top:8px"><span class="t-green">Want me to start drafting any of these?</span></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PERSONAS -->
-<section class="personas" id="personas">
-  <div class="container">
-    <h2 class="reveal">Built for people who<br>deserve to be found</h2>
-    <p class="reveal">Whatever your path looks like, your story has power. We help you use it.</p>
-    <div class="persona-grid">
-      <div class="persona-card reveal">
-        <div class="persona-emoji">&#127942;</div>
-        <h3>The Career Changer</h3>
-        <p>Military, sports, teaching, finance — you changed lanes. Most people hide it. Career Brand turns it into the most compelling thing about you.</p>
-        <div class="persona-quote">"My basketball career wasn't a detour. It was my MBA."</div>
-      </div>
-      <div class="persona-card reveal" style="transition-delay: 0.07s">
-        <div class="persona-emoji">&#128640;</div>
-        <h3>The Builder with a Day Job</h3>
-        <p>You're building something on the side — a startup, an open source project, a course. You need LinkedIn to work for both your job search AND your project.</p>
-        <div class="persona-quote">"Every post I write serves double duty."</div>
-      </div>
-      <div class="persona-card reveal" style="transition-delay: 0.14s">
-        <div class="persona-emoji">&#128566;</div>
-        <h3>The Silent Expert</h3>
-        <p>You're brilliant at what you do but terrible at talking about it. You stare at a blank LinkedIn post for 20 minutes, then close the tab.</p>
-        <div class="persona-quote">"I went from ghosting LinkedIn to 3 posts a week."</div>
-      </div>
-      <div class="persona-card reveal" style="transition-delay: 0.21s">
-        <div class="persona-emoji">&#128202;</div>
-        <h3>The Product Leader</h3>
-        <p>PMs, designers, team leads — you ship products, mentor teams, make hard calls. Your insights are gold but they're stuck in Slack threads.</p>
-        <div class="persona-quote">"Leadership lessons don't belong in private channels."</div>
-      </div>
-      <div class="persona-card reveal" style="transition-delay: 0.28s">
-        <div class="persona-emoji">&#127757;</div>
-        <h3>The Global Professional</h3>
-        <p>You work across cultures and languages. Career Brand writes in your language — Hebrew, Spanish, Portuguese, or any mix — and picks the right one for each post.</p>
-        <div class="persona-quote">"Local stories in Hebrew. Tech leadership in English."</div>
-      </div>
-      <div class="persona-card reveal" style="transition-delay: 0.35s">
-        <div class="persona-emoji">&#128161;</div>
-        <h3>The Job Hunter</h3>
-        <p>You don't want to apply to 100 jobs. You want the right people to find YOU. Strategic content + profile optimization + networking playbook.</p>
-        <div class="persona-quote">"I stopped applying. They started calling."</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- HOW IT WORKS -->
+<!-- HOW TO SET UP -->
 <section class="how" id="how">
   <div class="container">
-    <h2 class="reveal">90 seconds from invisible<br>to unforgettable</h2>
-    <p class="reveal">No forms. No onboarding calls. Just your LinkedIn URL and you're off.</p>
-    <div class="journey">
-      <div class="journey-step reveal">
-        <div class="journey-number">1</div>
-        <h3>Give it your LinkedIn</h3>
-        <p>Get Claude Code (free), add the Career Brand plugin, type /brand, paste your LinkedIn URL. The AI scans everything — experience, posts, engagement, gaps. Knows your brand before you do.</p>
+    <h2 class="reveal">Setup in 2 minutes</h2>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>Get Claude Code</h3>
+          <p>Anthropic's AI agent that runs in your terminal. If you already have it, skip to step 2.</p>
+          <div class="step-code"><span>$</span> npm install -g @anthropic-ai/claude-code</div>
+          <p style="margin-top:8px; font-size:13px; color:var(--text-soft);">Requires Node.js 18+ and an <a href="https://console.anthropic.com/" target="_blank" style="color:var(--text-mid)">Anthropic account</a>.</p>
+        </div>
       </div>
-      <div class="journey-step reveal" style="transition-delay: 0.12s">
-        <div class="journey-number">2</div>
-        <h3>Tell your story</h3>
-        <p>Give it a raw idea — something you built, learned, or experienced. It shapes it into a story with your voice. Offers hook options. You pick. Ready to post in 5 minutes.</p>
+      <div class="step reveal">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>Install the plugin</h3>
+          <p>One command. Open source. Adds two slash commands to your Claude Code.</p>
+          <div class="step-code"><span>$</span> claude plugin install asaferdman23/career-brand-plugin</div>
+        </div>
       </div>
-      <div class="journey-step reveal" style="transition-delay: 0.24s">
-        <div class="journey-number">3</div>
-        <h3>Watch doors open</h3>
-        <p>Consistent, authentic content compounds. Recruiters notice. Peers engage. Your name starts coming up in rooms you're not in. That's the power of a personal brand.</p>
+      <div class="step reveal">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3>Run /career-brand:brand and paste your details</h3>
+          <p>Copy-paste your LinkedIn about section, resume bullet points, or just type your experience. It builds your profile in 60 seconds, then you're ready to create content.</p>
+          <div class="step-code"><span>&gt;</span> /career-brand:brand I just shipped a feature that uses AI to plan events</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- LIVE DEMO CONVERSATIONS -->
-<section class="live-demos" id="examples">
+<!-- WHO IS THIS FOR -->
+<section class="who">
   <div class="container">
-    <div class="section-label reveal" style="text-align:center">See It In Action</div>
-    <h2 class="reveal" style="font-family:'Playfair Display',serif;font-size:38px;font-weight:900;letter-spacing:-1px;text-align:center;margin-bottom:16px;">Real conversations.<br>Real posts. Your voice.</h2>
-    <p class="reveal" style="text-align:center;font-size:18px;color:var(--text-mid);max-width:520px;margin:0 auto 56px;">Here's what it actually looks like when you use Career Brand. Not templates. A conversation that draws your story out.</p>
-
-    <!-- Demo 1: Engineer build-in-public -->
-    <div class="live-chat reveal">
-      <div class="live-chat-header">
-        <div class="live-chat-badge">Engineer</div>
-        <span>Build-in-public post</span>
+    <h2 class="reveal">Works for anyone with a story to tell</h2>
+    <div class="who-grid">
+      <div class="who-card reveal">
+        <h3>Engineers</h3>
+        <p>You ship real work but your LinkedIn is empty. Turn your builds, bugs, and breakthroughs into posts.</p>
       </div>
-      <div class="live-chat-body">
-        <div class="chat-msg user">
-          <div class="chat-role">You</div>
-          <div class="chat-text">/brand I just built an AI feature that reimagines event photos using GPT-4 Vision + DALL-E</div>
-        </div>
-        <div class="chat-msg ai">
-          <div class="chat-role">Career Brand</div>
-          <div class="chat-text">What's the personal angle — what happened to YOU while building this? The feature is cool, but people connect with the struggle, not the spec.</div>
-        </div>
-        <div class="chat-msg user">
-          <div class="chat-role">You</div>
-          <div class="chat-text">I spent 3 nights debugging why DALL-E kept generating cartoon events instead of photorealistic ones. Turned out it was one word in the prompt.</div>
-        </div>
-        <div class="chat-msg ai">
-          <div class="chat-role">Career Brand</div>
-          <div class="chat-text">That's the story. Who should care about this — engineers building with AI, or a broader audience?</div>
-        </div>
-        <div class="chat-msg user">
-          <div class="chat-role">You</div>
-          <div class="chat-text">Engineers who build with AI tools</div>
-        </div>
-        <div class="chat-msg ai">
-          <div class="chat-role">Career Brand</div>
-          <div class="chat-text"><strong>Suggested language:</strong> English (AI thought leadership, global reach)<br><br>
-            <strong>Hook A:</strong> "DALL-E kept giving me cartoon birthday parties. I asked for corporate galas."<br>
-            <strong>Hook B:</strong> "3 nights. 47 prompt iterations. One line of code changed everything."<br>
-            <strong>Hook C:</strong> "The hardest part of building with AI isn't the AI. It's making it do what you actually mean."</div>
-        </div>
-        <div class="chat-msg user">
-          <div class="chat-role">You</div>
-          <div class="chat-text">B</div>
-        </div>
-        <div class="chat-result">
-          <div class="chat-result-label">Final post — ready to copy</div>
-          <div class="chat-result-post">3 nights. 47 prompt iterations. One line of code changed everything.<br><br>I've been building an AI feature that takes event photos and generates visual variations — different venues, different vibes, same concept. The idea was simple. The execution was humbling.<br><br>DALL-E kept generating cartoons. Not stylized illustrations — literal cartoon birthday parties when I asked for corporate galas. I tried everything: negative prompts, style prefixes, temperature tweaks...<br><br><span class="chat-seemore">...see more</span></div>
-          <div class="chat-result-stats">
-            <span>&#128077; &#10084;&#65039; &#128079; <strong>247</strong></span>
-            <span><strong>38</strong> comments</span>
-          </div>
-        </div>
+      <div class="who-card reveal">
+        <h3>Career changers</h3>
+        <p>Military, sports, teaching, finance — your non-traditional background is your biggest advantage. This helps you tell that story.</p>
       </div>
-    </div>
-
-    <!-- Demo 2: Product Manager -->
-    <div class="live-chat reveal">
-      <div class="live-chat-header">
-        <div class="live-chat-badge">Product Manager</div>
-        <span>Leadership story</span>
+      <div class="who-card reveal">
+        <h3>Founders with day jobs</h3>
+        <p>Building a side project while job hunting? Every post serves both goals. The plugin knows your dual path.</p>
       </div>
-      <div class="live-chat-body">
-        <div class="chat-msg user">
-          <div class="chat-role">You</div>
-          <div class="chat-text">/brand I just led a product launch that doubled our user activation rate</div>
-        </div>
-        <div class="chat-msg ai">
-          <div class="chat-role">Career Brand</div>
-          <div class="chat-text">Nice win. But what almost went wrong? The best LinkedIn stories have a moment where everything could have fallen apart.</div>
-        </div>
-        <div class="chat-msg user">
-          <div class="chat-role">You</div>
-          <div class="chat-text">We almost killed the feature 2 weeks before launch. The data looked terrible until we realized we were measuring the wrong metric entirely.</div>
-        </div>
-        <div class="chat-msg ai">
-          <div class="chat-role">Career Brand</div>
-          <div class="chat-text">That's a much better story than "we launched and it worked." What's the one takeaway — the lesson someone else can steal?</div>
-        </div>
-        <div class="chat-msg user">
-          <div class="chat-role">You</div>
-          <div class="chat-text">Question your metrics before you question your product.</div>
-        </div>
-        <div class="chat-msg ai">
-          <div class="chat-role">Career Brand</div>
-          <div class="chat-text"><strong>Suggested language:</strong> English (product leadership, global audience)<br><br>
-            <strong>Hook A:</strong> "We almost killed our best feature. The data said it was failing."<br>
-            <strong>Hook B:</strong> "Two weeks before launch, I had to convince my VP not to pull the plug."<br>
-            <strong>Hook C:</strong> "The metric that saved our product launch wasn't in any dashboard."</div>
-        </div>
-        <div class="chat-result">
-          <div class="chat-result-label">Final post — ready to copy</div>
-          <div class="chat-result-post">We almost killed our best feature. The data said it was failing.<br><br>Two weeks before launch, activation numbers were tanking. My instinct was to delay. My VP wanted to cut scope. The team was demoralized.<br><br>Then someone asked: "Are we even measuring the right thing?"<br><br>We weren't. We'd been tracking first-session completion. But users weren't completing in one session — they were coming back the next day and finishing...<br><br><span class="chat-seemore">...see more</span></div>
-          <div class="chat-result-stats">
-            <span>&#128077; &#10084;&#65039; &#128079; <strong>312</strong></span>
-            <span><strong>54</strong> comments</span>
-          </div>
-        </div>
+      <div class="who-card reveal">
+        <h3>Product & design</h3>
+        <p>PMs, designers, team leads — your insights are gold but they're stuck in Slack. Get them out there.</p>
       </div>
-    </div>
-
-    <!-- Demo 3: Career Changer -->
-    <div class="live-chat reveal">
-      <div class="live-chat-header">
-        <div class="live-chat-badge">Career Changer</div>
-        <span>Personal narrative</span>
+      <div class="who-card reveal">
+        <h3>Job hunters</h3>
+        <p>Stop applying to 100 jobs. Strategic content + profile optimization = the right people find you.</p>
       </div>
-      <div class="live-chat-body">
-        <div class="chat-msg user">
-          <div class="chat-role">You</div>
-          <div class="chat-text">/brand I want to post about my transition from professional basketball to tech</div>
-        </div>
-        <div class="chat-msg ai">
-          <div class="chat-role">Career Brand</div>
-          <div class="chat-text">Most career-change posts are "I used to do X, now I do Y." Boring. What's one specific skill from basketball that you use every single day as an engineer — something people wouldn't expect?</div>
-        </div>
-        <div class="chat-msg user">
-          <div class="chat-role">You</div>
-          <div class="chat-text">Film review. In basketball we'd watch game tape for hours, analyzing every play. Now I do the same thing with code reviews and system architecture.</div>
-        </div>
-        <div class="chat-msg ai">
-          <div class="chat-role">Career Brand</div>
-          <div class="chat-text">That's the connection nobody sees. Who should care — other career changers, or hiring managers who undervalue non-traditional backgrounds?</div>
-        </div>
-        <div class="chat-msg user">
-          <div class="chat-role">You</div>
-          <div class="chat-text">Both honestly</div>
-        </div>
-        <div class="chat-msg ai">
-          <div class="chat-role">Career Brand</div>
-          <div class="chat-text"><strong>Suggested language:</strong> English (career arc, broad reach)<br><br>
-            <strong>Hook A:</strong> "8 years on the basketball court taught me more about engineering than any bootcamp."<br>
-            <strong>Hook B:</strong> "People ask why I left sports for tech. They think it's a left turn. It's a straight line."<br>
-            <strong>Hook C:</strong> "The best engineers I know think like athletes. Here's why."</div>
-        </div>
-        <div class="chat-result">
-          <div class="chat-result-label">Final post — ready to copy</div>
-          <div class="chat-result-post">People ask why I left sports for tech. They think it's a left turn. It's a straight line.<br><br>For 8 years I played professional basketball. And the thing nobody talks about is how much of basketball is NOT playing basketball. It's film review. Hours of watching tape, finding patterns, understanding why a play worked or fell apart.<br><br>Now I review code instead of game tape. And it's the same skill: slow down, find the pattern, understand the system...<br><br><span class="chat-seemore">...see more</span></div>
-          <div class="chat-result-stats">
-            <span>&#128077; &#10084;&#65039; &#128079; <strong>189</strong></span>
-            <span><strong>41</strong> comments</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Demo 4: /career — Job evaluation -->
-    <div class="live-chat reveal">
-      <div class="live-chat-header">
-        <div class="live-chat-badge" style="background: var(--gold); color: var(--text);">/career</div>
-        <span>Evaluating a job offer</span>
-      </div>
-      <div class="live-chat-body">
-        <div class="chat-msg user">
-          <div class="chat-role">You</div>
-          <div class="chat-text">/career I got an offer for Head of Product at an AI startup. 40% raise. But my side project is finally gaining traction.</div>
-        </div>
-        <div class="chat-msg ai">
-          <div class="chat-role">Career Brand</div>
-          <div class="chat-text"><em>Dispatching career advisor for deep analysis...</em><br><br>
-            <strong>Fit Score: 7/10</strong><br><br>
-            <strong>What's good:</strong> The title jump is significant. AI startup experience validates your side-project skills. The comp bump gives you more runway.<br><br>
-            <strong>Red flag:</strong> Early-stage AI startups typically expect 60+ hr weeks. That would kill your side project momentum right when it's working.<br><br>
-            <strong>The move:</strong> Counter with a 4-day week. Frame it as "I do my best strategic work when I have space to think." If they say no, that tells you about the culture.<br><br>
-            <strong>Content angle:</strong> Whether you take it or not, post about how you evaluate opportunities. "How I think about career decisions" posts signal executive thinking to future employers.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Demo 5: /career — Interview prep -->
-    <div class="live-chat reveal">
-      <div class="live-chat-header">
-        <div class="live-chat-badge" style="background: var(--gold); color: var(--text);">/career</div>
-        <span>Interview preparation</span>
-      </div>
-      <div class="live-chat-body">
-        <div class="chat-msg user">
-          <div class="chat-role">You</div>
-          <div class="chat-text">/career interview prep — I have a final round for a Senior PM role at a fintech company on Tuesday</div>
-        </div>
-        <div class="chat-msg ai">
-          <div class="chat-role">Career Brand</div>
-          <div class="chat-text"><strong>Your story bank for this interview:</strong><br><br>
-            &#127942; <strong>Leadership:</strong> "When I led the product launch that doubled activation — and almost got killed two weeks before ship date"<br><br>
-            &#128200; <strong>Data-driven:</strong> "The time we discovered we were measuring the wrong metric and it changed our entire strategy"<br><br>
-            &#9889; <strong>Under pressure:</strong> "From my sports career — performing when 18,000 people are watching teaches you something no standup can"<br><br>
-            &#128161; <strong>Innovation:</strong> "Building my side project — taking an idea from zero to working product, alone, on nights and weekends"<br><br>
-            <strong>"Tell me about yourself" (90 seconds):</strong><br>
-            <em>"I started in [your background], which taught me [unexpected skill]. That led me to [current role] where I [biggest impact]. Now I'm excited about [what this role offers] because [genuine reason]."</em><br><br>
-            Want to practice with mock questions?</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Demo 6: Monthly planning -->
-    <div class="live-chat reveal">
-      <div class="live-chat-header">
-        <div class="live-chat-badge">Any role</div>
-        <span>Monthly content planning</span>
-      </div>
-      <div class="live-chat-body">
-        <div class="chat-msg user">
-          <div class="chat-role">You</div>
-          <div class="chat-text">/brand plan my month</div>
-        </div>
-        <div class="chat-msg ai">
-          <div class="chat-role">Career Brand</div>
-          <div class="chat-text"><em>Analyzing your career goals, recent work, and what's resonated before...</em><br><br>
-            <strong>Your March content calendar:</strong><br><br>
-            <strong>Week 1</strong><br>
-            &#128197; Mon — [EN] "The debugging trick nobody taught me" — builder story<br>
-            &#128197; Thu — [HE] Your team win from last sprint — career reflection<br><br>
-            <strong>Week 2</strong><br>
-            &#128197; Tue — [EN] Hot take on AI code assistants — thought leadership<br>
-            &#128197; Fri — [HE] The moment you knew you picked the right career — personal story<br><br>
-            <strong>Week 3</strong><br>
-            &#128197; Mon — [EN] What you shipped this month — build-in-public<br>
-            &#128197; Wed — [HE] Networking lesson that changed your approach — career growth<br><br>
-            <strong>Week 4</strong><br>
-            &#128197; Tue — [EN] Contrarian opinion about your industry — thought leadership<br>
-            &#128197; Thu — [HE] End-of-month reflection — what you learned — personal<br><br>
-            <em>Want me to start drafting any of these?</em></div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- PREREQUISITE -->
-<section class="prereq">
-  <div class="container">
-    <div class="prereq-box reveal">
-      <div class="prereq-icon">&#9654;</div>
-      <div class="prereq-content">
-        <h3>First, you'll need Claude Code</h3>
-        <p>Career Brand is a plugin for <strong>Claude Code</strong> — Anthropic's AI coding agent that runs in your terminal. It's free to install and takes 30 seconds. If you already have it, skip to the install below.</p>
-        <div class="prereq-install"><span>$</span> npm install -g @anthropic-ai/claude-code</div>
+      <div class="who-card reveal">
+        <h3>Multilingual pros</h3>
+        <p>Works in any language. Hebrew, Spanish, English — it picks the right one per post based on your audience.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="cta" id="install">
+<section class="cta">
   <div class="container">
-    <h2 class="reveal">Your career is too good<br>to stay <em>invisible</em></h2>
-    <p class="reveal">Two commands. 90 seconds. Then start telling the story that opens doors you didn't know existed.</p>
-    <div class="cta-actions reveal" style="flex-direction: column; gap: 10px; align-items: center;">
-      <div style="font-size: 12px; color: var(--text-faint); font-weight: 600; letter-spacing: 1px;">STEP 1 &mdash; Get Claude Code</div>
+    <h2 class="reveal">You're already doing the hard part.<br>Let people know about it.</h2>
+    <p class="reveal">One install command. Paste your experience. Start posting.</p>
+    <div class="reveal" style="display:flex; flex-direction:column; align-items:center; gap:10px;">
       <div class="install-box">
-        <code><span>$</span> npm install -g @anthropic-ai/claude-code</code>
-        <button class="copy-btn" onclick="copyText(this, 'npm install -g @anthropic-ai/claude-code')" title="Copy">
+        <code><span>$</span> claude plugin install asaferdman23/career-brand-plugin</code>
+        <button class="copy-btn" onclick="copyText(this, 'claude plugin install asaferdman23/career-brand-plugin')" title="Copy">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
         </button>
       </div>
-      <div style="font-size: 12px; color: var(--text-faint); font-weight: 600; letter-spacing: 1px; margin-top: 12px;">STEP 2 &mdash; Add Career Brand</div>
-      <div class="install-box">
-        <code><span>$</span> claude plugin add career-brand</code>
-        <button class="copy-btn" onclick="copyText(this, 'claude plugin add career-brand')" title="Copy">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-        </button>
-      </div>
+      <p class="hero-note">Free &middot; Open Source &middot; <a href="https://github.com/asaferdman23/career-brand-plugin" target="_blank">View on GitHub</a></p>
     </div>
-    <div class="cta-note reveal" style="margin-top: 16px;">Free forever &middot; Open Source &middot; MIT Licensed</div>
   </div>
 </section>
 
@@ -1574,23 +696,19 @@
     <div class="footer-links">
       <a href="https://github.com/asaferdman23/career-brand-plugin">GitHub</a>
       <a href="https://github.com/asaferdman23/career-brand-plugin/issues">Feedback</a>
-      <a href="https://github.com/asaferdman23/career-brand-plugin/blob/main/LICENSE">MIT License</a>
+      <a href="https://github.com/asaferdman23/career-brand-plugin/blob/main/LICENSE">MIT</a>
     </div>
   </div>
 </footer>
 
 <script>
-  // Plausible custom event helper
   function track(eventName, props) {
-    if (window.plausible) {
-      window.plausible(eventName, { props: props || {} });
-    }
+    if (window.plausible) plausible(eventName, { props: props || {} });
   }
 
   function copyText(btn, text) {
     navigator.clipboard.writeText(text);
-    var label = text.includes('claude-code') ? 'claude-code-install' : 'plugin-install';
-    track('Copy Install Command', { command: label });
+    track('Copy Install Command', { command: text });
     btn.classList.add('copied');
     btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
     setTimeout(() => {
@@ -1599,22 +717,18 @@
     }, 2000);
   }
 
-  function copyInstall(btn) {
-    navigator.clipboard.writeText('claude plugin add career-brand');
-    track('Copy Install Command', { command: 'plugin-install' });
-    btn.classList.add('copied');
-    btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
-    setTimeout(() => {
-      btn.classList.remove('copied');
-      btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
-    }, 2000);
+  function showDemo(id) {
+    document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.demo-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('demo-' + id).classList.add('active');
+    event.target.classList.add('active');
   }
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) entry.target.classList.add('visible');
     });
-  }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>

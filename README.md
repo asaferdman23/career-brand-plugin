@@ -4,13 +4,15 @@ Personal branding & career strategy for developers. Create LinkedIn content, pla
 
 ## Install
 
-For local development, load the plugin directly:
+```bash
+claude plugin install asaferdman23/career-brand-plugin
+```
+
+For local development, load the plugin directly instead:
 
 ```bash
 claude --plugin-dir /absolute/path/to/career-brand-plugin
 ```
-
-Claude Code marketplace installs use `/plugin install`, not `claude plugin add`. Until this repo is published through a Claude Code marketplace, `--plugin-dir` is the correct way to test it.
 
 ## Commands
 
