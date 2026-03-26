@@ -4,8 +4,11 @@ Personal branding & career strategy for developers. Create LinkedIn content, pla
 
 ## Install
 
-```bash
-claude plugin install asaferdman23/career-brand-plugin
+Inside Claude Code, run:
+
+```
+/plugin marketplace add asaferdman23/career-brand-plugin
+/plugin install career-brand@career-brand
 ```
 
 For local development, load the plugin directly instead:

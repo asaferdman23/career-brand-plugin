@@ -467,14 +467,21 @@
     <h1>Turn your career into LinkedIn posts that actually sound like you</h1>
     <p class="hero-sub">Paste your experience. Tell it a raw idea. Get a post with your real voice — not "I'm thrilled to announce" garbage. Also: career advice, interview prep, and monthly content planning.</p>
     <div class="hero-install" id="install">
-      <div class="install-label">Install in Claude Code</div>
+      <div class="install-label">Step 1 — Add the marketplace</div>
       <div class="install-box">
-        <code><span>$</span> claude plugin install asaferdman23/career-brand-plugin</code>
-        <button class="copy-btn" onclick="copyText(this, 'claude plugin install asaferdman23/career-brand-plugin')" title="Copy">
+        <code><span>/</span>plugin marketplace add asaferdman23/career-brand-plugin</code>
+        <button class="copy-btn" onclick="copyText(this, '/plugin marketplace add asaferdman23/career-brand-plugin')" title="Copy">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
         </button>
       </div>
-      <p class="hero-note">Requires <a href="https://docs.anthropic.com/en/docs/claude-code" target="_blank">Claude Code</a> (Anthropic's CLI agent). Free plugin, open source, MIT licensed.</p>
+      <div class="install-label" style="margin-top:10px">Step 2 — Install the plugin</div>
+      <div class="install-box">
+        <code><span>/</span>plugin install career-brand@career-brand</code>
+        <button class="copy-btn" onclick="copyText(this, '/plugin install career-brand@career-brand')" title="Copy">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        </button>
+      </div>
+      <p class="hero-note">Run these inside <a href="https://docs.anthropic.com/en/docs/claude-code" target="_blank">Claude Code</a> (Anthropic's CLI agent). Free plugin, open source, MIT licensed.</p>
     </div>
   </div>
 </section>
@@ -622,9 +629,10 @@
       <div class="step reveal">
         <div class="step-num">2</div>
         <div class="step-content">
-          <h3>Install the plugin</h3>
-          <p>One command. Open source. Adds two slash commands to your Claude Code.</p>
-          <div class="step-code"><span>$</span> claude plugin install asaferdman23/career-brand-plugin</div>
+          <h3>Add the plugin</h3>
+          <p>Two commands inside Claude Code. Adds the marketplace, then installs the plugin.</p>
+          <div class="step-code"><span>/</span>plugin marketplace add asaferdman23/career-brand-plugin</div>
+          <div class="step-code" style="margin-top:6px"><span>/</span>plugin install career-brand@career-brand</div>
         </div>
       </div>
       <div class="step reveal">
@@ -677,10 +685,16 @@
   <div class="container">
     <h2 class="reveal">You're already doing the hard part.<br>Let people know about it.</h2>
     <p class="reveal">One install command. Paste your experience. Start posting.</p>
-    <div class="reveal" style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+    <div class="reveal" style="display:flex; flex-direction:column; align-items:center; gap:8px;">
       <div class="install-box">
-        <code><span>$</span> claude plugin install asaferdman23/career-brand-plugin</code>
-        <button class="copy-btn" onclick="copyText(this, 'claude plugin install asaferdman23/career-brand-plugin')" title="Copy">
+        <code><span>/</span>plugin marketplace add asaferdman23/career-brand-plugin</code>
+        <button class="copy-btn" onclick="copyText(this, '/plugin marketplace add asaferdman23/career-brand-plugin')" title="Copy">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+        </button>
+      </div>
+      <div class="install-box">
+        <code><span>/</span>plugin install career-brand@career-brand</code>
+        <button class="copy-btn" onclick="copyText(this, '/plugin install career-brand@career-brand')" title="Copy">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
         </button>
       </div>
