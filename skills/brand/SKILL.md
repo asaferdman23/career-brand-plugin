@@ -22,6 +22,7 @@ Also look for these files in the project memory directory (skip any that don't e
 - `brand_performance.md`
 - `brand_calendar.md`
 - `brand_automation.md`
+- `linkedin_algorithm.md` (curated algorithm best practices — overrides embedded defaults if present)
 
 ### Which profile to use?
 
@@ -141,7 +142,24 @@ Use this to add authentic technical details to the story.
 ### Step 4: Read career goals
 Check `career_goals.md` to align the post with current career positioning.
 
-### Step 4b: Career risk check (if post touches career topics)
+### Step 4b: Read performance insights (if brand_performance.md exists)
+Scan `brand_performance.md` and extract a quick intelligence brief before drafting:
+
+```
+What's working:  [top 2-3 topics/angles with highest reactions/comments]
+What flopped:    [angles or formats with low engagement]
+Language signal: [if Hebrew/English split — which performs better]
+Hook patterns:   [what kind of opening lines got traction]
+```
+
+Use this brief to:
+- **Prefer angles that have worked before** when multiple approaches are possible
+- **Avoid repeating formats that flopped**
+- **Weight hook choices toward what resonated** in Step 5
+
+If the file doesn't exist yet (fresh install), skip this step silently — don't mention it to the user.
+
+### Step 4c: Career risk check (if post touches career topics)
 If the post involves career moves, job search, leaving a company, or anything that could affect professional reputation, dispatch the career-advisor subagent:
 
 Use the `career-advisor` subagent with request type `post-review`, and pass the post idea or draft plus the career profile and current goals.
@@ -149,9 +167,12 @@ Use the `career-advisor` subagent with request type `post-review`, and pass the 
 **If the subagent fails, times out, or returns empty:** Skip the risk check and continue to Step 5. Mention to the user: "Couldn't run the career risk check — review the post yourself before publishing if it touches sensitive career topics."
 
 ### Step 5: Draft the post
-Write the post following the Voice & Style Guide below. Include:
+Write the post following the Voice & Style Guide AND the LinkedIn Algorithm Intelligence section below. Include:
 - **Suggested language** based on the user's preference and topic
 - **2-3 hook variations** — let the user pick
+- For each hook, note briefly why it fits (based on performance history or algorithm signal)
+
+When choosing format and structure, apply the algorithm guidelines: optimal length, hook type, whether to use an image, etc.
 
 ### Step 6: Polish
 After the user picks a hook, deliver the final polished post ready to copy-paste to LinkedIn.
@@ -209,7 +230,7 @@ If `brand_calendar.md` exists with upcoming posts, surface them first.
 ### Step 2: Gather material
 - Check for recent git activity in nearby repos
 - Review the user's profile for milestone angles
-- Review `brand_performance.md` for what resonated before
+- Read `brand_performance.md` and extract: top-performing topics, formats that flopped, language patterns — use this to rank ideas by proven engagement, not just novelty
 
 ### Step 3: Generate 5-7 ideas
 For each:
@@ -347,3 +368,61 @@ Reflection or Question (end) — leave them thinking, invite engagement
 3. **Career arc** — The unique journey. Real lessons.
 4. **Side project journey** — Build-in-public from the founder's perspective
 5. **Work wins** — Leadership, innovation, enterprise lessons
+
+---
+
+## LinkedIn Algorithm Intelligence
+
+> **Override rule:** If `linkedin_algorithm.md` exists in the project memory directory, load it instead of this section. The file is the user-maintained, up-to-date version. This embedded section is the fallback default.
+
+*Last updated: March 2026. LinkedIn's algorithm changes frequently — update `linkedin_algorithm.md` in your memory directory when you notice shifts.*
+
+### Post Length
+- **Sweet spot: 900–1,300 characters** (~150–220 words). Long enough to tell a story, short enough to avoid the "see more" penalty on mobile.
+- **Short posts (under 500 chars)** work only if the hook is extremely punchy and the content is a strong opinion or a provocative question.
+- **Long posts (1,500+ chars)** are risky — LinkedIn truncates at ~210 words on feed. Only worth it for carousel-style numbered lists where the truncation creates a curiosity gap.
+
+### Hook Formats That Perform (ranked)
+1. **Tension opener** — "I almost quit. Then this happened." (personal stakes)
+2. **Counterintuitive claim** — "The best engineers I know don't write the most code."
+3. **Specific number** — "6 months ago I had 0 followers. Here's what changed." (concrete, not vague)
+4. **Direct question** — "Why does every startup underpay their first 5 engineers?" (provokes response)
+5. **Scene-setter** — "It was 2am. The production server was down. My phone was ringing." (story pull)
+
+**Avoid:** Generic wisdom openers ("Success requires..."), humble-brag setups ("Honored to announce..."), and vague hooks ("Something exciting is coming").
+
+### What LinkedIn Suppresses (algorithm penalties)
+- **External links in the post body** — drops reach by ~30–50%. Put links in the first comment instead.
+- **Hashtag spam** — more than 3 hashtags signals low-quality content. Use 1–3, highly relevant only.
+- **Reposting/sharing without adding text** — near-zero reach. Always add your own take.
+- **Posts that get ignored in the first 30–60 minutes** — early engagement is the strongest signal. Post when your audience is active.
+- **Images with too much text** — LinkedIn's vision model flags these. Keep image text minimal.
+
+### What LinkedIn Boosts
+- **Comments over likes** — comments signal real engagement. End every post with a question that's genuinely easy to answer.
+- **Dwell time** — posts people read fully rank higher. Use line breaks aggressively. One idea per line.
+- **Early saves** — "save this post" CTAs are underused and work well. Use sparingly.
+- **Profile visits after post** — a post that makes people curious about you gets a ranking boost.
+
+### Formatting Rules
+- **Line breaks every 1–2 sentences** — LinkedIn is mobile-first. Dense paragraphs die on mobile.
+- **No bullet walls** — max 4–5 bullets. More than that and it reads like a listicle, not a person.
+- **Emojis: optional, contextual** — if the user uses them naturally, keep them. If not, don't add them. Never use emojis as bullet decorations.
+- **Bold** is not natively supported in LinkedIn posts — skip markdown formatting in final copy.
+
+### Posting Frequency & Timing
+- **Optimal cadence: 2–3x per week** — consistency beats volume. Daily posting often signals desperation and fatigues the audience.
+- **Best times (Israel/EU audience):** Tuesday–Thursday, 7–9am or 12–1pm local time.
+- **Best times (US audience):** Tuesday–Thursday, 8–10am EST.
+- **Worst time:** Friday afternoon, weekends (low feed activity for B2B content).
+
+### Content Type Performance (2025–2026 signal)
+| Type | Reach | Engagement | Notes |
+|------|-------|------------|-------|
+| Personal story | High | High | Best all-around |
+| Opinionated take | High | High (comments) | Risk: controversy. Reward: visibility |
+| Numbered list (text) | Medium | Medium | Overused. Needs strong angle |
+| How-to / tutorial | Medium | Medium | Better as carousel |
+| Job announcement | Low | High (likes only) | Reach mostly existing network |
+| Certificate announcement | Very low | Very low | Skip unless story-wrapped |
+| Plain text question | High | Very high | Underused. Works with credibility |
