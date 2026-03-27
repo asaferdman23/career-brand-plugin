@@ -41,27 +41,31 @@ Ask: **"Who are we building a brand profile for? You or someone else?"**
 
 Use the answer to set the **profile name** (e.g., "asaf", "dana"). This becomes the filename: `profile_[name].md`.
 
-### Step 2: Gather profile information (paste-first)
-Ask the user to paste the person's career details:
+### Step 2: Gather profile information (PDF-first)
+Ask the user to download their LinkedIn profile as a PDF and share it:
 
-> **Paste their LinkedIn "About" section, experience, and any other career details you have.**
-> You can copy-paste from LinkedIn, a resume, or just type it out — whatever you have.
-> I need: current role, work history, skills, education, and any notable achievements.
+> **The fastest way: download your LinkedIn profile as a PDF.**
+> On LinkedIn → Me → View Profile → More → Save to PDF.
+> Then drag it here or paste the path. I'll extract everything automatically.
 
-This is the **primary flow** — it works every time, with no browser dependency.
+This is the **primary flow** — gives the most complete data in one step.
 
-#### Optional: LinkedIn browser scan
-If the user provides a LinkedIn URL instead of pasting, AND browser automation is available, attempt to scan:
+**If the user shares a PDF:** Read it with the Read tool. Extract: current role, work history, skills, education, certifications, achievements, connection count if visible.
+
+#### Fallback 1: Paste
+If the user can't or won't download the PDF, ask them to paste instead:
+
+> **No problem — paste your LinkedIn "About" section + experience and I'll work from that.**
+
+#### Fallback 2: LinkedIn browser scan
+If the user provides a LinkedIn URL AND browser automation is available, attempt to scan:
 
 ```
 Navigate to: https://www.linkedin.com/in/[username]
 Use get_page_text to extract all profile content
 ```
 
-**Important:** LinkedIn often blocks automated access. If the scan fails or returns incomplete data, say so immediately and fall back to paste:
-> "LinkedIn blocked the scan. Can you paste the profile details instead?"
-
-Never pretend you scanned data you could not access.
+**Important:** LinkedIn often blocks automated access. If the scan fails, fall back immediately to paste — never pretend you scanned data you couldn't access.
 
 ### Step 3: Ask 3 quick follow-up questions (ONE AT A TIME)
 
