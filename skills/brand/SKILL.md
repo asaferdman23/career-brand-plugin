@@ -22,6 +22,7 @@ Also look for these files in the project memory directory (skip any that don't e
 - `brand_performance.md`
 - `brand_calendar.md`
 - `brand_automation.md`
+- `brand_style_[name].md` (approved writing style — load and apply to all drafts if present)
 - `linkedin_algorithm.md` (curated algorithm best practices — overrides embedded defaults if present)
 
 ### Which profile to use?
@@ -174,8 +175,44 @@ Write the post following the Voice & Style Guide AND the LinkedIn Algorithm Inte
 
 When choosing format and structure, apply the algorithm guidelines: optimal length, hook type, whether to use an image, etc.
 
+**If `brand_style_[name].md` exists:** Apply it strictly. Line rhythm, language pattern, formatting rules — match the approved style exactly. The style file overrides generic defaults.
+
 ### Step 6: Polish
 After the user picks a hook, deliver the final polished post ready to copy-paste to LinkedIn.
+
+### Step 6b: Auto-save style (silent)
+After delivering the final post, observe the style the user approved and save it to `brand_style_[name].md` in the project memory directory.
+
+Extract these style signals from the approved post:
+- **Line rhythm** — short lines / paragraph style / mixed
+- **Language pattern** — Hebrew only / English only / Hebrew + English terms / bilingual
+- **Formatting** — bold/headers used or not, bullet style
+- **Tone** — storyteller / punchy / technical / conversational
+- **CTA style** — how the post ends
+- **Specific patterns** — anything distinctive (e.g. "technical terms stay in English", "specific timestamps over vague time references")
+
+Save to `brand_style_[name].md`:
+```markdown
+---
+name: [Name] Brand Style
+description: Writing style extracted from approved posts — line rhythm, language, tone
+type: feedback
+---
+
+## Style Rules
+[extracted rules]
+
+## Approved Example
+[the exact final post that was approved]
+
+## Last Updated
+[date]
+```
+
+**First time saving:** Tell the user once — "Saved your style to memory — future drafts will match this format."
+**Subsequent saves:** Silent. Update the file without mentioning it.
+
+If the file already exists, update it — merge new observations with existing rules. Don't overwrite, accumulate.
 
 ### Step 7: Track performance (optional)
 After posting, if the user shares how it performed, save to `brand_performance.md`:
