@@ -1,0 +1,7 @@
+interface:
+  display_name: "Career Brand: Career Co-Pilot"
+  short_description: "Career strategy for developers"
+  default_prompt: "Use $career-brand-career to help me figure out what roles to target and how to position myself."
+
+policy:
+  allow_implicit_invocation: true

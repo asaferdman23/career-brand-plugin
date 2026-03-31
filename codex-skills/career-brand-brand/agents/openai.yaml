@@ -1,0 +1,7 @@
+interface:
+  display_name: "Career Brand: LinkedIn Posts"
+  short_description: "Draft LinkedIn posts in your voice"
+  default_prompt: "Use $career-brand-brand to draft a LinkedIn post about what I've been building this week."
+
+policy:
+  allow_implicit_invocation: true

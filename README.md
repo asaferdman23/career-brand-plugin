@@ -1,8 +1,45 @@
-# Career Brand Plugin for Claude Code
+# Career Brand — LinkedIn Content & Career Strategy
 
 Personal branding & career strategy for developers. Create LinkedIn content, plan content calendars, get career advice, prep for interviews — all powered by AI with your unique story.
 
-## Install
+Available for **Claude Code** and **OpenAI Codex CLI**.
+
+---
+
+## OpenAI Codex CLI
+
+### Install
+
+Copy the two skill folders into your Codex skills directory:
+
+```bash
+cp -r codex-skills/career-brand-brand ~/.codex/skills/
+cp -r codex-skills/career-brand-career ~/.codex/skills/
+```
+
+### Usage
+
+```
+$career-brand-brand I just shipped a feature that uses AI to generate event layouts
+$career-brand-brand plan my month
+$career-brand-brand ideas
+
+$career-brand-career what kind of roles should I target?
+$career-brand-career [paste a job listing]
+$career-brand-career interview prep for senior fullstack role
+```
+
+### What's different from Claude Code
+
+- Memory stored in `~/.codex/memory/career-brand/` instead of Claude's memory directory
+- Post reminders / scheduled tasks are not available (Claude Code-only feature)
+- Subagent career-advisor is not available — career analysis runs inline
+
+---
+
+## Claude Code
+
+### Install
 
 Inside Claude Code, run:
 
